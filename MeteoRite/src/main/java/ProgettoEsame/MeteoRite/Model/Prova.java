@@ -3,8 +3,8 @@ package ProgettoEsame.MeteoRite.Model;
 public class Prova 
 {
 	
-	private String citta = "Pandoiano";
-	private String key = "3b5be1096db5f3df2026d19e0acef27d";
+	private String citta;// = "Pandoiano";
+	private static String key = "3b5be1096db5f3df2026d19e0acef27d";
 	private String unita = "&units=metric";
 	private String indirizzo = "http://api.openweathermap.org/data/2.5/forecast?id="+ citta +"&appid="+ key + unita;
 	
