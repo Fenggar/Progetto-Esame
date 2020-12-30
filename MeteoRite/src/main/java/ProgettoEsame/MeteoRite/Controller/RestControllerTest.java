@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ProgettoEsame.MeteoRite.Model.APICall;
 import ProgettoEsame.MeteoRite.Model.Prova;
 
 @RestController
@@ -33,21 +34,14 @@ public class RestControllerTest {
 		return body;
 	}
 	
-	@GetMapping("/url") //non fa nulla
+	@GetMapping("/url") 
 	public void urlTest(@RequestParam(name="citta", defaultValue = "Ponsacco") String par) throws MalformedURLException, IOException
 	{
-		Prova oggetto = new Prova("Pontedera");
-		String chiave = oggetto.getKey();
-		String citta = oggetto.getCitta();
-		String unita = oggetto.getUnita();
+		APICall prova = new APICall("Pontedera","&units=metric");
+		String indirizzo = "http://api.openweathermap.org/data/2.5/forecast?q=" +prova.getNomeCitta() +"&appid=" +prova.getKey() +prova.getUnita();
 		
-
-		//String indirizzo = "http://api.openweathermap.org/data/2.5/forecast?q=" +citta +"&mode=xml&appid=" +chiave +unita;
-		String indirizzo = "http://api.openweathermap.org/data/2.5/forecast?q=" +citta +"&appid=" +chiave +unita;
 		URL url = new URL (indirizzo);
 		
-		//HttpURLConnection con = (HttpURLConnection) url.openConnection();
-		//InputStream in = con.getInputStream();
 		JSONObject jo = null;
 		JSONArray ja = null;
 		
