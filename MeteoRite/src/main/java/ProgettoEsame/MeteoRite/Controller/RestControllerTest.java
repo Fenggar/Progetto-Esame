@@ -32,7 +32,7 @@ public class RestControllerTest {
 	}
 	*/
 	@GetMapping("/url") 
-	public void urlTest(@RequestParam(name="citta", defaultValue = "Ponsacco") String par) throws MalformedURLException, IOException
+	public JSONObject urlTest(@RequestParam(name="citta", defaultValue = "Ponsacco") String par) throws MalformedURLException, IOException
 	{
 		APICall prova = new APICall("Pontedera","&units=metric");
 		String indirizzo = "http://api.openweathermap.org/data/2.5/forecast?q=" +prova.getNomeCitta() +"&appid=" +prova.getKey() +prova.getUnita();
@@ -79,6 +79,7 @@ public class RestControllerTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return jo;
 	}
 		
 		
