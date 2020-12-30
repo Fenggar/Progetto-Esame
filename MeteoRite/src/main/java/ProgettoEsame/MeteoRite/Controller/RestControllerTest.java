@@ -12,18 +12,15 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ProgettoEsame.MeteoRite.Model.APICall;
-import ProgettoEsame.MeteoRite.Model.Prova;
 
 @RestController
 public class RestControllerTest {
 	//per il momento stampa un oggetto di prova e cambia il nome della città con quello che viene usato nella chiamata. utile insomma.
-	@GetMapping("/prova")
+	/*@GetMapping("/prova")
 	public Prova metodoProva(@RequestParam(name="citta", defaultValue="Pandoiano") String parametro)
 	{
 		return new Prova(parametro);
@@ -33,7 +30,7 @@ public class RestControllerTest {
 	{
 		return body;
 	}
-	
+	*/
 	@GetMapping("/url") 
 	public void urlTest(@RequestParam(name="citta", defaultValue = "Ponsacco") String par) throws MalformedURLException, IOException
 	{
