@@ -8,6 +8,10 @@ public class APICall
 	
 	
 	//private String indirizzo = "http://api.openweathermap.org/data/2.5/forecast?id="+ citta +"&appid="+ key + unita;
+	public APICall(String nomeCitta)
+	{
+		this.nomeCitta=nomeCitta;
+	}
 	
 	public APICall(String nomeCitta, String unita)
 	{
