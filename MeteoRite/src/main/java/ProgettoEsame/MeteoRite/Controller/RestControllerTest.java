@@ -36,6 +36,23 @@ public class RestControllerTest {
 		//stampa 2 volte. cout funziona; return pure. 
 		//se funziona qua, funzionerà anche sul file. se spera.
 	}
+	/*
+	 * Questo metodo fornisce le previsioni per una città passata come parametro.
+	 * Se non si inserisce un parametro, visualizza meteo della città di default.
+	 */
+	@GetMapping("/forecast") 
+	public JSONObject paramTest(@RequestParam(name="citta", defaultValue = "Ponsacco") String par) throws MalformedURLException, IOException
+	{
+		Services serv = new Services();
+		JSONObject obj = new JSONObject();
+		
+		System.out.println(par);
+		
+		obj=serv.forecast(par);
+		System.out.println(obj);
+		return obj;
+	}
+	
 	
 	@GetMapping("/testFiltro") 
 	public JSONObject filterTest(@RequestParam(name="citta", defaultValue = "Ponsacco") String par) throws MalformedURLException, IOException

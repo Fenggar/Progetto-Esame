@@ -14,7 +14,8 @@ public class GestioneFile
 		FileWriter file = new FileWriter(nome_file+ ".json");
 	
 //rivedere questo toString, forse cambia il formato da json a txt		
-            file.write(jo.toJSONString());
+		//cambiato toJSONString in toString, non so la differenza ma pare uguale.
+            file.write(jo.toString());
             file.flush();
 	}
 		catch(IOException e)
