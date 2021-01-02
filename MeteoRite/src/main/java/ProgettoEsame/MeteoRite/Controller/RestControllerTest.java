@@ -55,6 +55,9 @@ public class RestControllerTest {
 		Services serv = new Services();
 		JSONObject obj = new JSONObject();
 		
+		String cittaInserita = par;
+		//a questo punto, chiamo il metodo che converte nome in ID usando cittaInserita.
+		//la chiamata all'API la farò poi con l'ID restituito.
 		System.out.println(par);
 		
 		obj=serv.forecast(par);

@@ -18,6 +18,11 @@ public class Services
 	private JSONObject jo= null;
 	private JSONArray ja = null;
 	
+	public String nameToID(String nome)
+	{
+		String ID ="";
+		return ID;
+	}
 	
 	public JSONObject call() throws MalformedURLException
 	{
