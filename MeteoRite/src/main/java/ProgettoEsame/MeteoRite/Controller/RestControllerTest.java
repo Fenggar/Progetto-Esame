@@ -56,29 +56,30 @@ public class RestControllerTest {
 		JSONObject obj = new JSONObject();
 		
 		String cittaInserita = par;
-		//a questo punto, chiamo il metodo che converte nome in ID usando cittaInserita.
-		//la chiamata all'API la farò poi con l'ID restituito.
+		
 		System.out.println(par);
 		
-		obj=serv.forecast(par);
+		
+		obj=serv.forecastID(par);
 		System.out.println(obj);
 		return obj;
 	}
 	
-	@GetMapping("/testFiltro") 
-	public JSONObject filterTest(@RequestParam(name="citta", defaultValue = "Ponsacco") String par) throws MalformedURLException, IOException
+	
+	
+	
+	//ho cancellato per sbaglio il test filtro ma non funzionava quindi fa niente
+	
+	/*
+	 * Semplice test che legge un file nella cartella del progetto.
+	 */
+	@GetMapping("/testfile") 
+	public void testfile(@RequestParam(name="citta", defaultValue = "Ponsacco") String par) throws MalformedURLException, IOException
 	{
-		//APICall testNuovo = new APICall("Pollenza");
 		Services serv = new Services();
 		JSONObject obj = new JSONObject();
-		obj=serv.call();
-		System.out.println(obj.get("city"));
-		System.out.println(obj.get("city.name"));
-		System.out.println(obj.get("city"+"name"));
-		System.out.println(obj.get("city"+".name"));
-		System.out.println(obj.get("city"+ obj.get("name")));
-//forse l'unico modo è rileggere tutto il file e usare una stringa per fare .equals
-		return obj;
+		GestioneFile gestF = new GestioneFile();
+		gestF.leggiFileTest("test.txt");
 	}
 	
 	
