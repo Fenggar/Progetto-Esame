@@ -17,7 +17,26 @@ public class Services
 {
 	private JSONObject jo= null;
 	private JSONArray ja = null;
+	private APICall call = new APICall("Pandoiano");
 	
+	public void nameToID(String nome) throws MalformedURLException
+	{
+		String ID ="";
+		
+		forecastNome(nome);
+		System.out.println("CHIAMATO FORCASTNAME DA nameToID");
+		JSONObject app = call.getCast();
+		JSONObject city = (JSONObject) app.get("city");
+		Object idCitta =city.get("id");
+		System.out.println("idCitta: "+idCitta);
+		
+		ID =idCitta.toString();
+		System.out.println("id:" +ID);
+		call.setId(ID);
+		
+		System.out.println("CONVERTITO ID");
+		
+	}
 	
 	public JSONObject call() throws MalformedURLException
 	{
@@ -45,7 +64,7 @@ public class Services
 			   in.close();
 			}
 			
-				jo = (JSONObject) JSONValue.parseWithException(data);	 //parse JSON Object
+				this.jo = (JSONObject) JSONValue.parseWithException(data);	 //parse JSON Object
 				//System.out.println("JSONObject scaricato: "+ jo);
 			/*} else {
 				ja = (JSONArray) JSONValue.parseWithException(data);	//parse JSON Array
@@ -67,14 +86,13 @@ public class Services
 	}
 	
 	
-	public JSONObject forecast(String nomeCitta) throws MalformedURLException
+	public void forecastNome(String nomeCitta) throws MalformedURLException
 	{
-		APICall call = new APICall(nomeCitta);
-		
+		call.setNomeCitta(nomeCitta);
 		//System.out.println(call.getNomeCitta());
 		
 		String indirizzo = "http://api.openweathermap.org/data/2.5/forecast?q="+ call.getNomeCitta() +"&appid="+ call.getKey() +call.getUnita();
-		System.out.println(indirizzo);
+		//System.out.println(indirizzo);
 		
 		URL url = new URL (indirizzo);
 		
@@ -115,6 +133,55 @@ public class Services
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		call.setCast(jo);
+		System.out.println("FATTO CHIAMATA NOME");
+		//return jo;
+		
+	}
+	
+	
+	
+	public JSONObject forecastID(String nomeCitta) throws MalformedURLException
+	{
+		
+		nameToID(nomeCitta);
+		
+		String indirizzo = "http://api.openweathermap.org/data/2.5/forecast?id="+ call.getId() +"&appid="+ call.getKey() +call.getUnita();
+		System.out.println(indirizzo);
+		
+		
+		URL url = new URL (indirizzo);
+		
+		try {
+			URLConnection openConnection = new URL(indirizzo).openConnection();
+			InputStream in = openConnection.getInputStream();
+			
+			String data = "";
+			String line = "";
+			try {
+			   InputStreamReader inR = new InputStreamReader( in );
+			   BufferedReader buf = new BufferedReader( inR );
+			  
+			   while ( ( line = buf.readLine() ) != null ) {
+				   data+= line;
+			   }
+			} 
+			finally 
+			{
+			   in.close();
+			}
+			
+		jo = (JSONObject) JSONValue.parseWithException(data);	 //parse JSON Object
+
+		} catch (IOException | ParseException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println("FATTO CHIAMATA ID");
+		
 		return jo;
 	}
 }
