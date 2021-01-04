@@ -28,6 +28,11 @@ public class GestioneFile
 		}
 	}
 	
+	/*
+	 * Semplice lettura file.
+	 * funziona. 
+	 */
+	
 	public void leggiFileTest(String nome) 
 	{
 		String data = "";
