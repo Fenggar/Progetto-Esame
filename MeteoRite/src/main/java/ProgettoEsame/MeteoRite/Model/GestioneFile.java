@@ -40,17 +40,19 @@ public class GestioneFile
 			JSONArray app = (JSONArray) jo.get("list");
 			JSONObject ogg = null;
 			JSONObject main = null;
-			JSONObject temp = null;
+			double temp = 0;
 			
 			for(int i=0;i< app.size(); i++)
 			{
 				ogg = (JSONObject) app.get(i);
 				main = (JSONObject) ogg.get("main");
-				//temp = (JSONObject) main.get("temp");
+				temp = (double)main.get("temp");
 				
 				System.out.println(i +":" +main);
+				System.out.println(i+")"+main.get("temp"));
+				file.append(main.toJSONString());
 			}
-	            file.write(app.toJSONString());
+	            //file.write(app.toJSONString());
 	            file.flush();
 		}
 			catch(IOException e)
