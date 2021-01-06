@@ -1,4 +1,4 @@
-//commento per nuovo commit
+//commento per nuovo commit.
 package ProgettoEsame.MeteoRite.Model;
 
 import org.json.simple.JSONObject;
