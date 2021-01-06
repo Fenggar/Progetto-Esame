@@ -4,10 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Scanner;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
+import org.json.simple.JSONValue;  
 
 public class GestioneFile 
 {
@@ -26,6 +28,38 @@ public class GestioneFile
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	
+	public void salvaEssenziale(String nome_file, JSONObject jo) throws IOException, ParseException
+	{
+		try 
+		{
+			FileWriter file = new FileWriter(nome_file+ ".json");
+		
+			JSONArray app = (JSONArray) jo.get("list");
+			JSONObject ogg = null;
+			JSONObject main = null;
+			double temp = 0;
+			
+			for(int i=0;i< app.size(); i++)
+			{
+				ogg = (JSONObject) app.get(i);
+				main = (JSONObject) ogg.get("main");
+				temp = (double)main.get("temp");
+				
+				System.out.println(i +":" +main);
+				System.out.println(i+")"+main.get("temp"));
+				file.append(main.toJSONString());
+			}
+	            //file.write(app.toJSONString());
+	            file.flush();
+		}
+			catch(IOException e)
+			{
+				e.printStackTrace();
+			}
+		     
 	}
 	
 	/*
