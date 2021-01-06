@@ -13,13 +13,20 @@ import org.json.simple.JSONValue;
 
 public class GestioneFile 
 {
-	
+	/**
+	 * Questo metodo salva un JSONObject su file.
+	 * Viene richiamato dalla rotta "/save"
+	 * 
+	 * @param nome_file Questo parametro contiene il nome che si vuole dare al file .txt che verrà creato.
+	 * @param jo Questo parametro contiene il JSONObject con le previsioni che verrà stampato.
+	 * @throws IOException
+	 */
 	public void salvaFile(String nome_file, JSONObject jo) throws IOException 
 	{
 		try {
 		FileWriter file = new FileWriter(nome_file+ ".json");
 	
-//rivedere questo toString, forse cambia il formato da json a txt		
+		//rivedere questo toString, forse cambia il formato da json a txt		
 		//cambiato toJSONString in toString, non so la differenza ma pare uguale.
             file.write(jo.toString());
             file.flush();
@@ -30,7 +37,13 @@ public class GestioneFile
 		}
 	}
 	
-	
+	/**
+	 * Questo metodo salva su file solo alcune parti del JSONObject con le previsioni.
+	 * @param nome_file
+	 * @param jo
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public void salvaEssenziale(String nome_file, JSONObject jo) throws IOException, ParseException
 	{
 		try 
@@ -59,14 +72,13 @@ public class GestioneFile
 			{
 				e.printStackTrace();
 			}
-		     
 	}
 	
-	/*
-	 * Semplice lettura file.
-	 * funziona. 
+	/**
+	 * Questo è un test per la lettura di un file.
+	 * Funaiona ma non serve a niente, infatti è usato solo in un test.
+	 * @param nome
 	 */
-	
 	public void leggiFileTest(String nome) 
 	{
 		String data = "";
@@ -91,6 +103,11 @@ public class GestioneFile
 	}
 	
 
+	/**
+	 * Altro test per la lettura di un file.
+	 * Neanche questo serve effettivamente.
+	 * @param nome
+	 */
 	public void leggiFile(String nome) 
 	{
 		/*

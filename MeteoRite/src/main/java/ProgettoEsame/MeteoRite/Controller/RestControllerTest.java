@@ -15,14 +15,8 @@ import ProgettoEsame.MeteoRite.Model.Services;
 
 @RestController
 public class RestControllerTest {
-	//Esempio RequestParam
-	/*@GetMapping("/prova")
-	public Prova metodoProva(@RequestParam(name="citta", defaultValue="Pandoiano") String parametro)
-	{
-		return new Prova(parametro);
-	}
 	
-	*Esempio RequestBody
+	/*Esempio RequestBody
 	@PostMapping("/test") //converte il json che metto su postman in un oggetti di Prova
 	public Prova provaPost(@RequestBody Prova body)
 	{
@@ -30,24 +24,7 @@ public class RestControllerTest {
 	}
 	*/
 	
-	/*
-	 * ESEMPIO chiamata, restituisce solo meteo di Pollenza.
-	 * 
-	 * @GetMapping("/url") 
-	public JSONObject urlTest(@RequestParam(name="citta", defaultValue = "Ponsacco") String par) throws MalformedURLException, IOException
-	{
-		//APICall testNuovo = new APICall("Pollenza");
-		Services serv = new Services();
-		JSONObject obj = new JSONObject();
-		obj=serv.call();
-		System.out.println(obj);
-		return obj;
-		//stampa 2 volte. cout funziona; return pure. 
-		//se funziona qua, funzionerà anche sul file. se spera.
-	}
-	
-	 */
-	
+	//test per utilizzare le date. non funziona. stranamente.
 	@GetMapping("/datatest") 
 	public void data(@RequestParam(name="citta", defaultValue = "Ponsacco") String par) throws MalformedURLException, IOException, ParseException
 	{
@@ -62,14 +39,19 @@ public class RestControllerTest {
 	    	System.out.println("funziona");
 	    else
 	    	System.out.println("oh no");
-	    
 	}
 	
 	
-	
-	/*
-	 * Questo metodo fornisce le previsioni per una città passata come parametro.
-	 * Se non si inserisce un parametro, visualizza meteo della città di default.
+	/**
+	 * Questa rotta effettua la chiamata all'API OpenWeatherMap.
+	 * 
+	 * 
+	 * @param par Questo parametro è usato per inserire il nome della città di cui si vogliono sapere
+	 * 		  	  Se non si specifica questo parametro, verrà usato il valore di default.
+	 * 
+	 * @return La rotta restituisce un JSONObject contente il JSON con le previsioni.
+	 * @throws MalformedURLException
+	 * @throws IOException
 	 */
 	@GetMapping("/forecast") 
 	public JSONObject paramTest(@RequestParam(name="citta", defaultValue = "Ponsacco") String par) throws MalformedURLException, IOException
@@ -87,12 +69,11 @@ public class RestControllerTest {
 	}
 	
 	
-	
-	
-	//ho cancellato per sbaglio il test filtro ma non funzionava quindi fa niente
-	
-	/*
-	 * Semplice test che legge un file nella cartella del progetto.
+	/**
+	 * Test per lettura file. non fa niente di utile, probabilmente verrà cancellato a breve.
+	 * @param par
+	 * @throws MalformedURLException
+	 * @throws IOException
 	 */
 	@GetMapping("/testfile") 
 	public void testfile(@RequestParam(name="citta", defaultValue = "Ponsacco") String par) throws MalformedURLException, IOException
@@ -104,8 +85,17 @@ public class RestControllerTest {
 	}
 	
 	
+	/**
+	 * Questo metodo salva su un file .json il JSONObject restituito dalla chiamata all'API
+	 * 
+	 * @param par Questo parametro contiene il nome della città di cui si vogliono stampare le previsioni.
+	 * 
+	 * @return Se l'esecuzione va a buon fine, il metodo restituisce la stringa "salvato".
+	 * @throws IOException
+	 */
+	//AGGIUNGERE PARAMETRO PER SPECIFICARE NOME FILE.txt DA SALVARE
 	@GetMapping("/save")
-	public String save() throws IOException
+	public String save(@RequestParam(name="citta", defaultValue = "Ponsacco") String par) throws IOException
 	{
 		try 
 		{	
@@ -113,11 +103,7 @@ public class RestControllerTest {
 		GestioneFile gest = new GestioneFile();
 		Services serv = new Services();
 		
-		
-		//oggetto= (JSONObject) JSONValue.parseWithException(data);	 //parse JSON Object
-		//System.out.println("JSONObject scaricato: "+ this.jo);
-		
-		oggetto =serv.call();
+		oggetto =serv.forecastID(par);
 		System.out.println(oggetto);
 		
 		gest.salvaFile("testSalvataggio", oggetto);
@@ -133,6 +119,13 @@ public class RestControllerTest {
 		return "salvato";
 	}
 	
+	/**
+	 * Questo metodo dovrebbe salvare su file solo alcuni parametri specific del JSONObject restituito dalla chiamata 
+	 * ma ancora non è finito.
+	 * @return
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	@GetMapping("/saveex")
 	public String saveX() throws IOException, ParseException
 	{
@@ -142,11 +135,7 @@ public class RestControllerTest {
 		GestioneFile gest = new GestioneFile();
 		Services serv = new Services();
 		
-		
-		//oggetto= (JSONObject) JSONValue.parseWithException(data);	 //parse JSON Object
-		//System.out.println("JSONObject scaricato: "+ this.jo);
-		
-		oggetto =serv.call();
+		oggetto =serv.forecastID("Pontedera");
 		System.out.println(oggetto);
 		
 		gest.salvaEssenziale("testSpecificoLista", oggetto);
