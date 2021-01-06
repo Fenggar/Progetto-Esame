@@ -70,7 +70,13 @@ public class GestioneFile
  * Per ora questa è un'eventualità che non si verificherà perchè l'esame è il 25.
  * Ne riparleremo al prossimo appello.
  */
-				data= (dt.charAt(9));
+				data= dt.charAt(9);
+				
+/*
+ * Forse l'unica soluzione è un array di char.
+ * che non so come sia diverso da una String ma sicuramente Paolo me l'aveva detto.
+ * 
+ */
 				
 				System.out.println(i +":" +main);
 				System.out.println(i+")"+main.get("temp"));
