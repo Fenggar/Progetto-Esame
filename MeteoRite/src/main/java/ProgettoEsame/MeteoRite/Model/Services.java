@@ -148,6 +148,66 @@ public class Services
 		
 	}
 	
+	public String jsonToDay(JSONObject ogg)
+	{
+		String dt = null;
+		char data[] = new char[5];
+		String dataS = null;
+		
+		dt = (String) ogg.get("dt_txt");
+		
+		data[0]= dt.charAt(8);
+		data[1]= dt.charAt(9);
+		
+		dataS = Character.toString(data[0]) +Character.toString(data[1]);
+		
+		System.out.println("STRINGA DATAS: " +dataS);
+		
+		return dataS;
+	}
+	
+	public JSONObject extrapolator(JSONObject ogg)
+	{
+		JSONObject main = null;
+		Double temp = 0.0;
+		Double tempmin = 0.0;
+		Double tempmax = 0.0;
+		Object feels = 0.0;
+		
+		JSONObject box= new JSONObject();
+		
+		System.out.println("SONO DENTRO EXTRAPOLATOR");
+		
+		main = (JSONObject) ogg.get("main");
+		temp = (Double) main.get("temp");
+		tempmin = (Double) main.get("temp_min");
+		tempmax = (Double) main.get("temp_max");
+		//feels =  main.get("feels_like");
+		
+		System.out.println("HO ASSEGNATO TUTTE LE VARIABILI");
+		
+		box = boxer(temp,tempmin, tempmax);//, feels);
+		
+		System.out.println("STO PER RESTITUIRE BOXER");
+		
+		return box;
+	}
+	
+	public JSONObject boxer(Double t, Double tm, Double tmax)//, Object f)
+	{
+		System.out.println("SONO DENTRO BOXER");
+		JSONObject box=new JSONObject();
+		box.put("temp", t);
+		box.put("tempmin", tm);
+		box.put("tempmax", tmax);
+		//box.put("feels", f);
+		
+		System.out.println("HO RIEMPITO BOXER");
+		
+		
+		return box;
+	}
+	
 	
 	
 	
