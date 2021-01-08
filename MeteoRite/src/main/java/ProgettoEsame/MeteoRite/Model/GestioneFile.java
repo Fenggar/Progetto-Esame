@@ -111,13 +111,16 @@ public class GestioneFile
 			
 		}
 		
-		j =0;
+		//j =0;
+		
 		JSONgest g = new JSONgest();
-		for(int i = 0; i<arr[j].size(); i++)
+		
+		for(int k = 0; k<5; k++)
 		{
-			
-			double m = g.media(arr[j]);
-			j++;
+			double t = g.mediaTemp(arr[k]);
+			double min = g.mediaMin(arr[k]);
+			double max = g.mediaMax(arr[k]);
+			//j++;
 		}
 			
 			
