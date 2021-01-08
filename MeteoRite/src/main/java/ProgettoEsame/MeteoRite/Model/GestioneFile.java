@@ -9,7 +9,9 @@ import java.util.Scanner;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;  
+import org.json.simple.JSONValue;
+
+import JSONHandler.JSONgest;  
 
 public class GestioneFile 
 {
@@ -107,6 +109,15 @@ public class GestioneFile
 				arr[j].add(app);
 			}
 			
+		}
+		
+		j =0;
+		JSONgest g = new JSONgest();
+		for(int i = 0; i<arr[j].size(); i++)
+		{
+			
+			double m = g.media(arr[j]);
+			j++;
 		}
 			
 			
