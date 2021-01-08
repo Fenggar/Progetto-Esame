@@ -114,6 +114,7 @@ public class GestioneFile
 		//j =0;
 		
 		JSONgest g = new JSONgest();
+		JSONArray fin = new JSONArray();
 		
 		for(int k = 0; k<5; k++)
 		{
@@ -121,14 +122,16 @@ public class GestioneFile
 			double min = g.mediaMin(arr[k]);
 			double max = g.mediaMax(arr[k]);
 			//j++;
+			
+			box = serv.boxer(t, min, max);
+			fin.add(box);
 		}
-			
-			
-			
 		
-		
-		
-		
+		for(int k = 0; k< fin.size();k++)
+		{
+			box = (JSONObject) fin.get(k);
+			System.out.println(k+") "+box);
+		}
 	            //file.write(app.toJSONString());
 				file.append(box.toJSONString());
 	            file.flush();
