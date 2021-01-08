@@ -63,8 +63,11 @@ public class GestioneFile
 			JSONObject ogg = null;
 			JSONObject box = null;
 			String data= null;
+		
 			Services serv = new Services();
 			
+			JSONArray jar = new JSONArray();
+			JSONArray arr[] = new JSONArray[5];
 			
 			
 			for(int i=0;i< jarr.size(); i++)
@@ -72,14 +75,48 @@ public class GestioneFile
 				ogg = (JSONObject) jarr.get(i); //qua c'è un elemento di list[]
 				box = serv.extrapolator(ogg); //qua c'è il json con le temperature
 				data= serv.jsonToDay(ogg); //qua c'è la data 
-							
+				box.put("data", data);
+				
+				jar.add(box);
+				
 				System.out.println(i +"ogg:" +ogg);
 				System.out.println(i+"box" +box);
 				System.out.println(i+ "data: " +data);
 				//System.out.println(i+".."+dt);
-				file.append(box.toJSONString());
 			}
+//questo dovrebbe andare dentro un altro for
+			//dovrei anche trovare un modo per salvarmi l'indice.
+			
+			//salvo i valori per il primo confornto
+			JSONObject app = (JSONObject) jar.get(0);
+			String d = (String) app.get("data");
+			
+		int j = 0;	
+		for(int i = 0; i<jar.size();i++)
+		{
+			app = (JSONObject) jar.get(i);
+			String d2 = (String) app.get("data");
+			
+			if(d2.equals(d))
+			{
+				arr[j].add(app);
+			}
+			else
+			{
+				j++;
+				arr[j].add(app);
+			}
+			
+		}
+			
+			
+			
+		
+		
+		
+		
 	            //file.write(app.toJSONString());
+				file.append(box.toJSONString());
 	            file.flush();
 		}
 			catch(IOException e)
