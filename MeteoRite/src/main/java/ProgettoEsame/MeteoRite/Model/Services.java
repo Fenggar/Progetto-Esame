@@ -211,15 +211,6 @@ public class Services
 	//creare array coi giorni dimensione 5
 	//prendere dati possibilmente a mezzanotte o giudilì
 	//
-	public String dataComparar()
-	{
-		String data = null;
-		return data;
-	}
-	
-	
-	
-	
 	
 	
 }

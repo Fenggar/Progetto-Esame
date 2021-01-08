@@ -57,81 +57,24 @@ public class GestioneFile
 	 */
 	public void salvaEssenziale(String nome_file, JSONObject jo) throws IOException, ParseException
 	{
+		JSONgest g = new JSONgest();
+		JSONObject box = new JSONObject();
 		try 
 		{
 			FileWriter file = new FileWriter(nome_file+ ".json");
 		
 			JSONArray jarr = (JSONArray) jo.get("list");
-			JSONObject ogg = null;
-			JSONObject box = null;
-			String data= null;
-		
-			Services serv = new Services();
 			
-			JSONArray jar = new JSONArray();
+			JSONArray ja = g.arrayLoader(jarr);
 			JSONArray arr[] = new JSONArray[5];
-			
-			
-			for(int i=0;i< jarr.size(); i++)
-			{
-				ogg = (JSONObject) jarr.get(i); //qua c'è un elemento di list[]
-				box = serv.extrapolator(ogg); //qua c'è il json con le temperature
-				data= serv.jsonToDay(ogg); //qua c'è la data 
-				box.put("data", data);
-				
-				jar.add(box);
-				
-				System.out.println(i +"ogg:" +ogg);
-				System.out.println(i+"box" +box);
-				System.out.println(i+ "data: " +data);
-				//System.out.println(i+".."+dt);
-			}
-//questo dovrebbe andare dentro un altro for
-			//dovrei anche trovare un modo per salvarmi l'indice.
+			ja=g.dataFilter(ja,arr);
 			
 			//salvo i valori per il primo confornto
-			JSONObject app = (JSONObject) jar.get(0);
-			String d = (String) app.get("data");
-			
-		int j = 0;	
-		for(int i = 0; i<jar.size();i++)
-		{
-			app = (JSONObject) jar.get(i);
-			String d2 = (String) app.get("data");
-			
-			if(d2.equals(d))
-			{
-				arr[j].add(app);
-			}
-			else
-			{
-				j++;
-				arr[j].add(app);
-			}
-			
-		}
 		
 		//j =0;
-		
-		JSONgest g = new JSONgest();
 		JSONArray fin = new JSONArray();
+		fin = g.finalArrayLoader(arr);
 		
-		for(int k = 0; k<5; k++)
-		{
-			double t = g.mediaTemp(arr[k]);
-			double min = g.mediaMin(arr[k]);
-			double max = g.mediaMax(arr[k]);
-			//j++;
-			
-			box = serv.boxer(t, min, max);
-			fin.add(box);
-		}
-		
-		for(int k = 0; k< fin.size();k++)
-		{
-			box = (JSONObject) fin.get(k);
-			System.out.println(k+") "+box);
-		}
 	            //file.write(app.toJSONString());
 				file.append(box.toJSONString());
 	            file.flush();
@@ -141,6 +84,7 @@ public class GestioneFile
 				e.printStackTrace();
 			}
 	}
+	
 	
 	/**
 	 * Questo è un test per la lettura di un file.
