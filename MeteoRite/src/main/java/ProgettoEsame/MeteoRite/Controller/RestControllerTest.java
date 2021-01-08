@@ -152,6 +152,26 @@ public class RestControllerTest {
 		}
 		return "salvato";
 	}
+	
+	
+	@GetMapping("/t")
+	public void tester()
+	{
+		JSONObject prova = new JSONObject();
+		
+			
+			int matrice[][] = new int[5][8];
+			for(int j = 0; j<5; j++)
+			{
+				System.out.println("riga?:" +j);
+				for(int k = 0; k<8; k++)
+				{
+					matrice[j][k] = k;
+					System.out.println("cella:" +j+")" +matrice[j][k]);
+				}
+			}
+		
+	}
 		
 		
 		
