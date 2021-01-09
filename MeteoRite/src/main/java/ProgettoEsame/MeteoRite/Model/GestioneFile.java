@@ -67,22 +67,31 @@ public class GestioneFile
 			
 			JSONArray ja = g.arrayLoader(jarr);
 			JSONArray arr[] = new JSONArray[5];
-			ja=g.dataFilter(ja,arr);
+//c'è un problema con l'array. non carica per niente arr[].
+//dice solo che arr[j] è null
+//testare array di jsonarray
+			//non ho capito ancora perchè; ripercorrere dall'inizio, aggiungere print per capire cosa diventa cosa.
+			//comunque per semplicità la funzione potrebbe non ritornare l'array.
+			g.dataFilter(ja,arr);
 			
 			//salvo i valori per il primo confornto
 		
-		//j =0;
-		JSONArray fin = new JSONArray();
-		fin = g.finalArrayLoader(arr);
-		
-	            //file.write(app.toJSONString());
-				file.append(box.toJSONString());
-	            file.flush();
-		}
-			catch(IOException e)
+			//j =0;
+			JSONArray fin = new JSONArray();
+			fin = g.finalArrayLoader(arr);
+			
+			for(int k = 0; k < fin.size(); k++)
 			{
-				e.printStackTrace();
+				box = (JSONObject) fin.get(k);
+				file.append(box.toJSONString());
 			}
+			
+	    file.flush();
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	
@@ -155,6 +164,7 @@ public class GestioneFile
 		}
 		
 	}
+	
 	
 	
 }
