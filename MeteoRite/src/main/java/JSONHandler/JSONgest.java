@@ -20,7 +20,7 @@ public class JSONgest
 			for( i=0 ; i<ja.size();i++)
 			{
 				jo = (JSONObject) ja.get(i);
-				media += (int)jo.get("temp");
+				media += (double)jo.get("temp");
 				
 			}
 			media = (media/i);
@@ -32,15 +32,25 @@ public class JSONgest
 	{
 		System.out.println("MIN MIN");
 			double m = 0.0;
+			double app = 0.0;
 			JSONObject jo = new JSONObject();
 			
 			int i= 0;
 			for( i=0 ; i<ja.size();i++)
 			{
+				System.out.println("SONO NEL FOR DI MIN MIN");
+				
 				jo = (JSONObject) ja.get(i);
-				if((int)(jo.get("temp_min")) < m)
+				
+				System.out.println(" -messo valore su jo; temp_min =" +jo.get("temp_min"));
+				app = (double)jo.get("temp_min");
+				
+				System.out.println(" -messo valore su app");
+				
+				if( app < m)
 				{
-					m += (int)jo.get("temp_min");
+					System.out.println("SONO NELL'IF DI MIN MIN");
+					m = app;
 				}
 			}
 
@@ -51,15 +61,17 @@ public class JSONgest
 	{
 		System.out.println("MAX MAX");
 			double m = 0.0;
+			double app = 0.0;
 			JSONObject jo = new JSONObject();
 			
 			int i= 0;
 			for( i=0 ; i<ja.size();i++)
 			{
 				jo = (JSONObject) ja.get(i);
-				if((int)(jo.get("temp_max")) > m)
+				app = (double)jo.get("temp_max");
+				if( app > m)
 				{
-					m= (int)jo.get("temp_max");
+					m = app;
 				}
 			}
 
@@ -95,7 +107,7 @@ public class JSONgest
 	
 		Services serv = new Services();
 		
-		JSONArray jar = new JSONArray();
+		JSONArray boxArray = new JSONArray();
 		// DICHIARAZIONE ARRAY DI JSONARRAY JSONArray arr[] = new JSONArray[5];
 		
 		
@@ -106,50 +118,61 @@ public class JSONgest
 			data= serv.jsonToDay(ogg); //qua c'è la data 
 			box.put("data", data);
 			
-			jar.add(box);
-			
+			boxArray.add(box);
 		}
 		
-		return jar;
+		return boxArray;
 	}
 	
 	
-	public void dataFilter(JSONArray ja, JSONArray arr[])
+	public JSONArray[] dataFilter(JSONArray ja, JSONArray arr[])
 	{
 		System.out.println("DATA FILTER in teoria era questo che dava problemi");
 		//se è effettivamente qui il problema, passare come parametri 2 array (ja e arr[i] facendo un for dall'altra parte
 		//cambiare quindi il for in modo che mette gli elementi solo se data corrisponde
 		
-		JSONObject app = (JSONObject) ja.get(0);
-		String d = (String) app.get("data");
+		
+		JSONObject app = (JSONObject) ja.get(0); //salvo il primo elemento per il confronto della data
+		String d = (String) app.get("data"); //salvo la data per il confronto
+		String d2;
+		
+		JSONArray test = new JSONArray();
 		//JSONArray arr[] = new JSONArray[5];
 		
 		int j = 0;	
 		for(int i = 0; i<ja.size();i++)
 		{
+			System.out.println("SONO NEL FOR DI DATA FILTER");
 			if(j<5)
 			{
-			app = (JSONObject) ja.get(i);
-			String d2 = (String) app.get("data");
-			
-			if(d2.equals(d))
-			{
-				arr[j].add(app);
-				System.out.println("D2 è uguale. j vale:"+j +"ci ho messo" +app);
-			}
-			else
-			{
-				j++;
-				arr[j].add(app);
-				System.out.println("D2 non è uguale. incremento j adesso vale: "+j +"ci ho messo:"+app);
-			}
-			
+				app = (JSONObject) ja.get(i);
+				d2 = (String) app.get("data");
+				
+				System.out.println("SONO NEL PRIMO IF DI DATAFILTER");
+				
+				if(d2.equals(d))
+				{
+					System.out.println("SONO NEL SECONDO IF DI DATAFILTER");
+					test.add(app);
+					//arr[j].add(app);
+					System.out.println("D2 è uguale. j vale:"+j +"ci ho messo" +app);
+				}
+				else
+				{
+					System.out.println("SONO NEL PRIMO ELSE DI DATAFILTER");
+					arr[j] = test;
+					j++;
+					test.clear();
+					test.add(app);
+					//arr[j].add(app);
+					System.out.println("D2 non è uguale. incremento j adesso vale: "+j +"ci ho messo:"+app);
+				}
 			}
 			else
 				break;
 		}
 		
-		//return arr;
+		return arr;
 	}
 	
 	public JSONArray finalArrayLoader(JSONArray arr[])
@@ -160,6 +183,7 @@ public class JSONgest
 		
 		for(int k =0; k < 5; k++)
 		{
+			System.out.println("SONO NEL FOR DI FINALARRAYLOADER");
 			box=mediaBox(arr[k]);
 			fin.add(box);
 		}

@@ -198,8 +198,8 @@ public class Services
 		System.out.println("SONO DENTRO BOXER");
 		JSONObject box=new JSONObject();
 		box.put("temp", t);
-		box.put("tempmin", tm);
-		box.put("tempmax", tmax);
+		box.put("temp_min", tm);
+		box.put("temp_max", tmax);
 		//box.put("feels", f);
 		
 		System.out.println("HO RIEMPITO BOXER");

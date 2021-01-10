@@ -72,7 +72,7 @@ public class GestioneFile
 //testare array di jsonarray
 			//non ho capito ancora perchè; ripercorrere dall'inizio, aggiungere print per capire cosa diventa cosa.
 			//comunque per semplicità la funzione potrebbe non ritornare l'array.
-			g.dataFilter(ja,arr);
+			arr = g.dataFilter(ja,arr);
 			
 			//salvo i valori per il primo confornto
 		
