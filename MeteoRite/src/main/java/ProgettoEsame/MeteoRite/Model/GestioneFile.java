@@ -67,9 +67,6 @@ public class GestioneFile
 			
 			JSONArray ja = g.arrayLoader(jarr);
 			JSONArray arr[] = new JSONArray[5];
-//c'è un problema con l'array. non carica per niente arr[].
-//dice solo che arr[j] è null
-//testare array di jsonarray
 			//non ho capito ancora perchè; ripercorrere dall'inizio, aggiungere print per capire cosa diventa cosa.
 			//comunque per semplicità la funzione potrebbe non ritornare l'array.
 			arr = g.dataFilter(ja,arr);
