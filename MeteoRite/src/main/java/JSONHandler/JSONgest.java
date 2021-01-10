@@ -14,16 +14,17 @@ public class JSONgest
 	{
 		System.out.println("MEDIA TEMP");
 			double media = 0.0;
+			String m;
 			JSONObject jo = new JSONObject();
 			
 			int i= 0;
 			for( i=0 ; i<ja.size();i++)
 			{
 				jo = (JSONObject) ja.get(i);
-				media += (double)jo.get("temp");
-				
+				m = jo.get("temp").toString();
+				media += Double.valueOf(m);
 			}
-			media = (media/i);
+			media = (double) (media/i);
 			
 			System.out.println("Valore media: "+media);
 
@@ -33,25 +34,27 @@ public class JSONgest
 	public double minMin(JSONArray ja)
 	{
 		System.out.println("MIN MIN");
-			double m = 110.10;
+			double m = 666.10;
 			double app = 0.0;
+			String s;
 			JSONObject jo = new JSONObject();
 			
 			int i= 0;
 			for( i=0 ; i<ja.size();i++)
 			{
-				System.out.println("SONO NEL FOR DI MIN MIN");
+				//System.out.println("SONO NEL FOR DI MIN MIN");
 				
 				jo = (JSONObject) ja.get(i);
 				
-				System.out.println(" -messo valore su jo; temp_min =" +jo.get("temp_min"));
-				app = (double)jo.get("temp_min");
+				//System.out.println(" -messo valore su jo; temp_min =" +jo.get("temp_min"));
+				s=jo.get("temp_min").toString();
+				app = Double.valueOf(s);
 				
-				System.out.println(" -messo valore su app");
+				//System.out.println(" -messo valore su app");
 				
 				if( app < m)
 				{
-					System.out.println("SONO NELL'IF DI MIN MIN");
+					//System.out.println("SONO NELL'IF DI MIN MIN");
 					m = app;
 				}
 			}
@@ -65,17 +68,19 @@ public class JSONgest
 		System.out.println("MAX MAX");
 			double m = 0.0;
 			double app = 0.0;
+			String s;
 			JSONObject jo = new JSONObject();
 			
 			int i= 0;
 			for( i=0 ; i<ja.size();i++)
 			{
 				jo = (JSONObject) ja.get(i);
-				app = (double)jo.get("temp_max");
+				s = jo.get("temp_max").toString();
+				app = Double.valueOf(s); 
 				if( app > m)
 				{
 					m = app;
-					System.out.println("SONO NELL'IF di MAXMAX: "+m);
+					//System.out.println("SONO NELL'IF di MAXMAX: "+m);
 				}
 			}
 			System.out.println("Valore max: "+m);
@@ -134,20 +139,23 @@ public class JSONgest
 		
 	public JSONObject mediaBox(JSONArray arr)
 	{
-		System.out.println("MEDIA BOX");
 		//JSONArray fin = new JSONArray();
 		JSONObject box = new JSONObject();
 		
 		Services serv = new Services();
 		
+		System.out.println("SONO DENTRO MEDIABOX");
 		
 			double t = mediaTemp(arr);
 			double min = minMin(arr);
 			double max = maxMax(arr);
 			String feel = feelsLike(arr);
 			//j++;
+			System.out.println("Ho chiamato tutte le funzioni: "+t +" "+min + " " +max +" " +feel);
 			
 			box = serv.boxer(t, min, max,feel);
+			
+			System.out.println("CHIAMO BOXER CON: " +box);
 		
 		return box;
 	}
@@ -176,6 +184,7 @@ public class JSONgest
 			System.out.println("SONO DENTRO IL FOR DI ARRAYLOADER; ogg:" +ogg +" box: "+box);
 			
 			boxArray.add(box);
+			box = null; //secondo me rimane zozzo box; provamo
 		}
 		
 		return boxArray;
@@ -187,7 +196,9 @@ public class JSONgest
 		System.out.println("DATA FILTER");
 		
 		JSONObject app = (JSONObject) ja.get(0); //salvo il primo elemento per il confronto della data
+		System.out.println("JA[0]: "+app);
 		String d = (String) app.get("data"); //salvo la data per il confronto
+		System.out.println("prima data: "+d);
 		String d2;
 		
 		JSONArray test = new JSONArray();
@@ -216,10 +227,16 @@ public class JSONgest
 					System.out.println("SONO NEL PRIMO ELSE DI DATAFILTER");
 					arr[j] = test;
 					j++;
-					test.clear();
-					test.add(app);
-					//arr[j].add(app);
-					System.out.println("D2 non è uguale. incremento j adesso vale: "+j +"ci ho messo:"+app);
+					if(j < 5)
+					{
+						test.clear();
+						test.add(app);
+						//arr[j].add(app);
+						System.out.println("D2 non è uguale. incremento j adesso vale: "+j +"ci ho messo:"+app);
+					}
+					else
+						break;
+					
 				}
 			}
 			else
@@ -229,15 +246,26 @@ public class JSONgest
 		return arr;
 	}
 	
+
+	//se non funziona così, provare a passare come parametro un jsonarray anzichè una matrice;
+	//quindi la chiamata deve stare in un for;
 	public JSONArray finalArrayLoader(JSONArray arr[])
 	{
 		System.out.println("FINAL ARRAY LOADER");
 		JSONArray fin = new JSONArray();
 		JSONObject box = new JSONObject();
 		
+		JSONArray nuovo = new JSONArray();
+		
 		for(int k =0; k < 5; k++)
 		{
-			System.out.println("SONO NEL FOR DI FINALARRAYLOADER");
+			System.out.println("SONO NEL FOR DI FINALARRAYLOADER; k= "+k);
+			nuovo = arr[k];
+			for(int j = 0; j< nuovo.size();j++)
+			{
+				box = (JSONObject) nuovo.get(j);
+				System.out.println(j+") "+box);
+			}
 			box=mediaBox(arr[k]);
 			System.out.println("IL BOX CHE STO PER AGGIUNGERE ALL'ARRAY FINALE e':" +box);
 			fin.add(box);

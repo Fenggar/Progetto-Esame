@@ -188,23 +188,23 @@ public class Services
 		System.out.println("SONO DENTRO EXTRAPOLATOR");
 		
 		main = (JSONObject) ogg.get("main");
-		System.out.println("MAIN: " + main);
+		//System.out.println("MAIN: " + main);
 		
 		t = main.get("temp").toString();
 		temp = Double.valueOf(t);
-		System.out.println("TEMP JSON: "+ main.get("temp"));
-		System.out.println("TEMP variabile: "+temp);
+		//System.out.println("TEMP JSON: "+ main.get("temp"));
+		//System.out.println("TEMP variabile: "+temp);
 		
-		System.out.println("MIN JSON: "+ main.get("temp_min"));
+		//System.out.println("MIN JSON: "+ main.get("temp_min"));
 		min = main.get("temp_min").toString();
-		System.out.println("STRINGA MIN: "+min);
+		//System.out.println("STRINGA MIN: "+min);
 		tempmin = Double.valueOf(min);
-		System.out.println("MIN variabile: "+tempmin);
+		//System.out.println("MIN variabile: "+tempmin);
 		
 		max = main.get("temp_max").toString();
 		tempmax = Double.valueOf(max);
-		System.out.println("MAX JSON: "+ main.get("temp_max"));
-		System.out.println("MAX variabile: "+tempmax);
+		//System.out.println("MAX JSON: "+ main.get("temp_max"));
+		//System.out.println("MAX variabile: "+tempmax);
 		
 		feels =  main.get("feels_like").toString();
 		
@@ -213,7 +213,7 @@ public class Services
 		
 		box = boxer(temp,tempmin, tempmax, feels);//, feels);
 		
-		System.out.println("STO PER RESTITUIRE BOXER");
+		System.out.println("STO PER RESTITUIRE BOXER: " +box);
 		
 		return box;
 	}
@@ -227,7 +227,7 @@ public class Services
 		box.put("temp_max", tmax);
 		box.put("feels", f);
 		
-		System.out.println("HO RIEMPITO BOXER");
+		System.out.println("HO RIEMPITO BOXER: "+box);
 		
 		
 		return box;
