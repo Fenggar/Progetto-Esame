@@ -83,6 +83,7 @@ public class GestioneFile
 			for(int k = 0; k < fin.size(); k++)
 			{
 				box = (JSONObject) fin.get(k);
+				System.out.println("IL BOX CHE STO PER SCRIVERE NEL FILE: "+box);
 				file.append(box.toJSONString());
 			}
 			
