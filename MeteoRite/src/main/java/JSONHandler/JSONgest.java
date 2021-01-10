@@ -85,6 +85,7 @@ public class JSONgest
 	
 	public String feelsLike(JSONArray ja)
 	{
+		System.out.println("SONO DENTRO FEELSLIKE");
 		String f;
 		double confronto = 0.0;
 		
@@ -96,7 +97,7 @@ public class JSONgest
 		for( i=0 ; i<ja.size();i++)
 		{
 			jo = (JSONObject) ja.get(i);
-			f = jo.get("feels_like").toString();
+			f =(String) jo.get("feels").toString();
 			confronto= Double.valueOf(f);
 			media += confronto;
 		}
