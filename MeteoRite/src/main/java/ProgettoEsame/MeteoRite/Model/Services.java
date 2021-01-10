@@ -168,39 +168,64 @@ public class Services
 	
 	public JSONObject extrapolator(JSONObject ogg)
 	{
+//PRIMA DI ASSEGNARE I DOUBLE: è necessario convertire a stringa il json;
+		//questo perchè OpenWeather tronca i decimali ogni tanto (a caso) e quindi a volte double diventano int.
+		//a quanto pare java non casta un intero in un double. perchèssì.
+		
 		JSONObject main = null;
 		Double temp = 0.0;
 		Double tempmin = 0.0;
 		Double tempmax = 0.0;
-		Object feels = 0.0;
+		
+		String feels;
+		
+		String t;
+		String min;
+		String max;
 		
 		JSONObject box= new JSONObject();
 		
 		System.out.println("SONO DENTRO EXTRAPOLATOR");
 		
 		main = (JSONObject) ogg.get("main");
-		temp = (Double) main.get("temp");
-		tempmin = (Double) main.get("temp_min");
-		tempmax = (Double) main.get("temp_max");
-		//feels =  main.get("feels_like");
+		System.out.println("MAIN: " + main);
+		
+		t = main.get("temp").toString();
+		temp = Double.valueOf(t);
+		System.out.println("TEMP JSON: "+ main.get("temp"));
+		System.out.println("TEMP variabile: "+temp);
+		
+		System.out.println("MIN JSON: "+ main.get("temp_min"));
+		min = main.get("temp_min").toString();
+		System.out.println("STRINGA MIN: "+min);
+		tempmin = Double.valueOf(min);
+		System.out.println("MIN variabile: "+tempmin);
+		
+		max = main.get("temp_max").toString();
+		tempmax = Double.valueOf(max);
+		System.out.println("MAX JSON: "+ main.get("temp_max"));
+		System.out.println("MAX variabile: "+tempmax);
+		
+		feels =  main.get("feels_like").toString();
+		
 		
 		System.out.println("HO ASSEGNATO TUTTE LE VARIABILI");
 		
-		box = boxer(temp,tempmin, tempmax);//, feels);
+		box = boxer(temp,tempmin, tempmax, feels);//, feels);
 		
 		System.out.println("STO PER RESTITUIRE BOXER");
 		
 		return box;
 	}
 	
-	public JSONObject boxer(Double t, Double tm, Double tmax)//, Object f)
+	public JSONObject boxer(Double t, Double tm, Double tmax, String f)
 	{
 		System.out.println("SONO DENTRO BOXER");
 		JSONObject box=new JSONObject();
 		box.put("temp", t);
 		box.put("temp_min", tm);
 		box.put("temp_max", tmax);
-		//box.put("feels", f);
+		box.put("feels", f);
 		
 		System.out.println("HO RIEMPITO BOXER");
 		

@@ -24,6 +24,8 @@ public class JSONgest
 				
 			}
 			media = (media/i);
+			
+			System.out.println("Valore media: "+media);
 
 			return media;
 	}
@@ -31,7 +33,7 @@ public class JSONgest
 	public double minMin(JSONArray ja)
 	{
 		System.out.println("MIN MIN");
-			double m = 0.0;
+			double m = 110.10;
 			double app = 0.0;
 			JSONObject jo = new JSONObject();
 			
@@ -53,6 +55,7 @@ public class JSONgest
 					m = app;
 				}
 			}
+			System.out.println("Valore min: " +m);
 
 			return m;
 	}
@@ -72,10 +75,60 @@ public class JSONgest
 				if( app > m)
 				{
 					m = app;
+					System.out.println("SONO NELL'IF di MAXMAX: "+m);
 				}
 			}
+			System.out.println("Valore max: "+m);
 
 			return m;
+	}
+	
+	public String feelsLike(JSONArray ja)
+	{
+		String f;
+		double confronto = 0.0;
+		
+		
+		double media = 0.0;
+		JSONObject jo = new JSONObject();
+		
+		int i= 0;
+		for( i=0 ; i<ja.size();i++)
+		{
+			jo = (JSONObject) ja.get(i);
+			f = jo.get("feels_like").toString();
+			confronto= Double.valueOf(f);
+			media += confronto;
+		}
+		media = (media/i);
+		
+		System.out.println("Valore media: "+media);
+		
+		confronto = media;
+		
+		if(confronto < 0)
+		{
+			f = "io non uscirei";
+		}
+		else if(confronto < 10)
+		{
+			f = "fa freschino";
+		}
+		else if(confronto < 18)
+		{
+			f="lascia a casa il giubbetto";
+		}
+		else if(confronto >= 18)
+		{
+			f = "mettete le maniche corte";
+		}
+		else
+		{
+			f="la temperatura percepita è una menzogna";
+		}
+		
+		
+		return f;
 	}
 		
 	public JSONObject mediaBox(JSONArray arr)
@@ -90,9 +143,10 @@ public class JSONgest
 			double t = mediaTemp(arr);
 			double min = minMin(arr);
 			double max = maxMax(arr);
+			String feel = feelsLike(arr);
 			//j++;
 			
-			box = serv.boxer(t, min, max);
+			box = serv.boxer(t, min, max,feel);
 		
 		return box;
 	}
@@ -118,6 +172,8 @@ public class JSONgest
 			data= serv.jsonToDay(ogg); //qua c'è la data 
 			box.put("data", data);
 			
+			System.out.println("SONO DENTRO IL FOR DI ARRAYLOADER; ogg:" +ogg +" box: "+box);
+			
 			boxArray.add(box);
 		}
 		
@@ -127,10 +183,7 @@ public class JSONgest
 	
 	public JSONArray[] dataFilter(JSONArray ja, JSONArray arr[])
 	{
-		System.out.println("DATA FILTER in teoria era questo che dava problemi");
-		//se è effettivamente qui il problema, passare come parametri 2 array (ja e arr[i] facendo un for dall'altra parte
-		//cambiare quindi il for in modo che mette gli elementi solo se data corrisponde
-		
+		System.out.println("DATA FILTER");
 		
 		JSONObject app = (JSONObject) ja.get(0); //salvo il primo elemento per il confronto della data
 		String d = (String) app.get("data"); //salvo la data per il confronto
@@ -185,6 +238,7 @@ public class JSONgest
 		{
 			System.out.println("SONO NEL FOR DI FINALARRAYLOADER");
 			box=mediaBox(arr[k]);
+			System.out.println("IL BOX CHE STO PER AGGIUNGERE ALL'ARRAY FINALE e':" +box);
 			fin.add(box);
 		}
 		
