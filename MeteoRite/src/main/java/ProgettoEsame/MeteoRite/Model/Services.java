@@ -33,7 +33,7 @@ public class Services
 		nameToID(nomeCitta);
 		
 		String indirizzo = "http://api.openweathermap.org/data/2.5/forecast?id="+ call.getId() +"&appid="+ call.getKey() +call.getUnita();
-		System.out.println(indirizzo);
+		//System.out.println(indirizzo);
 		
 		URL url = new URL (indirizzo);
 		
@@ -64,7 +64,7 @@ public class Services
 			e.printStackTrace();
 		}
 		
-		System.out.println("FATTO CHIAMATA ID");
+		//System.out.println("FATTO CHIAMATA ID");
 		
 		return jo;
 	}
@@ -83,17 +83,17 @@ public class Services
 		String ID ="";
 		
 		forecastNome(nome);
-		System.out.println("CHIAMATO FORCASTNAME DA nameToID");
+		//System.out.println("CHIAMATO FORCASTNAME DA nameToID");
 		JSONObject app = call.getCast();
 		JSONObject city = (JSONObject) app.get("city");
 		Object idCitta =city.get("id");
-		System.out.println("idCitta: "+idCitta);
+		//System.out.println("idCitta: "+idCitta);
 		
 		ID =idCitta.toString();
-		System.out.println("id:" +ID);
+		//System.out.println("id:" +ID);
 		call.setId(ID);
 		
-		System.out.println("CONVERTITO ID");
+		//System.out.println("CONVERTITO ID");
 		
 	}
 	
@@ -143,7 +143,7 @@ public class Services
 		}
 		
 		call.setCast(jo);
-		System.out.println("FATTO CHIAMATA NOME");
+		//System.out.println("FATTO CHIAMATA NOME");
 		//return jo;
 		
 	}
@@ -161,7 +161,7 @@ public class Services
 		
 		dataS = Character.toString(data[0]) +Character.toString(data[1]);
 		
-		System.out.println("STRINGA DATAS: " +dataS);
+		//System.out.println("STRINGA DATAS: " +dataS);
 		
 		return dataS;
 	}
@@ -176,7 +176,6 @@ public class Services
 		Double temp = 0.0;
 		Double tempmin = 0.0;
 		Double tempmax = 0.0;
-		
 		String feels;
 		
 		String t;
@@ -185,31 +184,23 @@ public class Services
 		
 		JSONObject box= new JSONObject();
 		
-		System.out.println("SONO DENTRO EXTRAPOLATOR");
+		//System.out.println("SONO DENTRO EXTRAPOLATOR");
 		
 		main = (JSONObject) ogg.get("main");
-		//System.out.println("MAIN: " + main);
 		
 		t = main.get("temp").toString();
 		temp = Double.valueOf(t);
-		//System.out.println("TEMP JSON: "+ main.get("temp"));
-		//System.out.println("TEMP variabile: "+temp);
 		
-		//System.out.println("MIN JSON: "+ main.get("temp_min"));
 		min = main.get("temp_min").toString();
-		//System.out.println("STRINGA MIN: "+min);
+
 		tempmin = Double.valueOf(min);
-		//System.out.println("MIN variabile: "+tempmin);
 		
 		max = main.get("temp_max").toString();
 		tempmax = Double.valueOf(max);
-		//System.out.println("MAX JSON: "+ main.get("temp_max"));
-		//System.out.println("MAX variabile: "+tempmax);
 		
 		feels =  main.get("feels_like").toString();
 		
-		
-		System.out.println("HO ASSEGNATO TUTTE LE VARIABILI");
+		//System.out.println("HO ASSEGNATO TUTTE LE VARIABILI");
 		
 		box = boxer(temp,tempmin, tempmax, feels);//, feels);
 		
@@ -220,7 +211,7 @@ public class Services
 	
 	public JSONObject boxer(Double t, Double tm, Double tmax, String f)
 	{
-		System.out.println("SONO DENTRO BOXER");
+		//System.out.println("SONO DENTRO BOXER");
 		JSONObject box=new JSONObject();
 		box.put("temp", t);
 		box.put("temp_min", tm);

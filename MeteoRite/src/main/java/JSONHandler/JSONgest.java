@@ -8,11 +8,29 @@ import ProgettoEsame.MeteoRite.Model.Services;
 
 public class JSONgest 
 {
+	private int indexLocal;
+	
+	public JSONgest()
+	{
+		
+	}
+	public JSONgest(int indexLocal)
+	{
+		this.indexLocal =indexLocal;
+	}
+	
+	public int getIndexLocal() {
+		return indexLocal;
+	}
+	public void setIndexLocal(int indexLocal) {
+		this.indexLocal = indexLocal;
+	}
+	
 	
 	
 	public double mediaTemp(JSONArray ja)
 	{
-		System.out.println("MEDIA TEMP");
+		//System.out.println("MEDIA TEMP");
 			double media = 0.0;
 			String m;
 			JSONObject jo = new JSONObject();
@@ -26,14 +44,14 @@ public class JSONgest
 			}
 			media = (double) (media/i);
 			
-			System.out.println("Valore media: "+media);
+			//System.out.println("Valore media: "+media);
 
 			return media;
 	}
 	
 	public double minMin(JSONArray ja)
 	{
-		System.out.println("MIN MIN");
+		//System.out.println("MIN MIN");
 			double m = 666.10;
 			double app = 0.0;
 			String s;
@@ -58,14 +76,14 @@ public class JSONgest
 					m = app;
 				}
 			}
-			System.out.println("Valore min: " +m);
+			//System.out.println("Valore min: " +m);
 
 			return m;
 	}
 	
 	public double maxMax(JSONArray ja)
 	{
-		System.out.println("MAX MAX");
+		//System.out.println("MAX MAX");
 			double m = 0.0;
 			double app = 0.0;
 			String s;
@@ -83,14 +101,14 @@ public class JSONgest
 					//System.out.println("SONO NELL'IF di MAXMAX: "+m);
 				}
 			}
-			System.out.println("Valore max: "+m);
+			//System.out.println("Valore max: "+m);
 
 			return m;
 	}
 	
 	public String feelsLike(JSONArray ja)
 	{
-		System.out.println("SONO DENTRO FEELSLIKE");
+		//System.out.println("SONO DENTRO FEELSLIKE");
 		String f;
 		double confronto = 0.0;
 		
@@ -108,7 +126,7 @@ public class JSONgest
 		}
 		media = (media/i);
 		
-		System.out.println("Valore media: "+media);
+		//System.out.println("Valore media feels: "+media);
 		
 		confronto = media;
 		
@@ -162,7 +180,7 @@ public class JSONgest
 	
 	public JSONArray arrayLoader(JSONArray jarr)
 	{
-		System.out.println("ARRAY LOADER");
+		//System.out.println("ARRAY LOADER");
 		
 		JSONObject ogg = null;
 		JSONObject box = null;
@@ -181,7 +199,7 @@ public class JSONgest
 			data= serv.jsonToDay(ogg); //qua c'è la data 
 			box.put("data", data);
 			
-			System.out.println("SONO DENTRO IL FOR DI ARRAYLOADER; ogg:" +ogg +" box: "+box);
+			//System.out.println("SONO DENTRO IL FOR DI ARRAYLOADER; ogg:" +ogg +" box: "+box);
 			
 			boxArray.add(box);
 			box = null; //secondo me rimane zozzo box; provamo
@@ -191,57 +209,48 @@ public class JSONgest
 	}
 	
 	
-	public JSONArray[] dataFilter(JSONArray ja, JSONArray arr[])
+	public JSONArray dataFilter(JSONArray ja ,int index)
 	{
-		System.out.println("DATA FILTER");
+		//System.out.println("DATA FILTER");
 		
-		JSONObject app = (JSONObject) ja.get(0); //salvo il primo elemento per il confronto della data
-		System.out.println("JA[0]: "+app);
+		JSONArray arr = new JSONArray();
+		
+		JSONObject app = (JSONObject) ja.get(index); //salvo il primo elemento per il confronto della data
+		//System.out.println("JA[0]: "+app);
 		String d = (String) app.get("data"); //salvo la data per il confronto
-		System.out.println("prima data: "+d);
+		//System.out.println("prima data: "+d);
 		String d2;
 		
-		JSONArray test = new JSONArray();
-		//JSONArray arr[] = new JSONArray[5];
+		//JSONArray test = new JSONArray();
 		
-		int j = 0;	
-		for(int i = 0; i<ja.size();i++)
+		
+		//int j = 0;	
+		for(int i = index; i<ja.size();i++)
 		{
-			System.out.println("SONO NEL FOR DI DATA FILTER");
-			if(j<5)
-			{
+			//System.out.println("SONO NEL FOR DI DATA FILTER");
+			
 				app = (JSONObject) ja.get(i);
 				d2 = (String) app.get("data");
 				
-				System.out.println("SONO NEL PRIMO IF DI DATAFILTER");
+				//System.out.println("SONO NEL PRIMO IF DI DATAFILTER");
 				
 				if(d2.equals(d))
 				{
-					System.out.println("SONO NEL SECONDO IF DI DATAFILTER");
-					test.add(app);
+					//System.out.println("SONO NEL SECONDO IF DI DATAFILTER");
+					arr.add(app);
 					//arr[j].add(app);
-					System.out.println("D2 è uguale. j vale:"+j +"ci ho messo" +app);
+					System.out.println("D2 è uguale. i vale:"+i +"ci ho messo" +app);
 				}
 				else
 				{
-					System.out.println("SONO NEL PRIMO ELSE DI DATAFILTER");
-					arr[j] = test;
-					j++;
-					if(j < 5)
-					{
-						test.clear();
-						test.add(app);
-						//arr[j].add(app);
-						System.out.println("D2 non è uguale. incremento j adesso vale: "+j +"ci ho messo:"+app);
-					}
-					else
-						break;
-					
-				}
-			}
-			else
-				break;
+					index = i;
+					this.indexLocal = index;
+					i = 9999;
+					System.out.println("ELSE DI DATAFILTER; index vale: "+index +" i: "+i +" indexLocal = "+indexLocal );
+					break;
+				}	
 		}
+		
 		
 		return arr;
 	}
@@ -249,38 +258,35 @@ public class JSONgest
 
 	//se non funziona così, provare a passare come parametro un jsonarray anzichè una matrice;
 	//quindi la chiamata deve stare in un for;
-	public JSONArray finalArrayLoader(JSONArray arr[])
+	public JSONObject finalArrayLoader(JSONArray arr)
 	{
-		System.out.println("FINAL ARRAY LOADER");
-		JSONArray fin = new JSONArray();
+		//System.out.println("FINAL ARRAY LOADER");
+		//JSONArray fin = new JSONArray();
 		JSONObject box = new JSONObject();
 		
-		JSONArray nuovo = new JSONArray();
+		//JSONArray nuovo = new JSONArray();
 		
-		for(int k =0; k < 5; k++)
-		{
-			System.out.println("SONO NEL FOR DI FINALARRAYLOADER; k= "+k);
-			nuovo = arr[k];
-			for(int j = 0; j< nuovo.size();j++)
+			//nuovo = arr[k];
+			for(int j = 0; j< arr.size();j++)
 			{
-				box = (JSONObject) nuovo.get(j);
-				System.out.println(j+") "+box);
+				box = (JSONObject) arr.get(j);
+				System.out.println("FINALARRAYLOADER"+j+") "+box);
 			}
-			box=mediaBox(arr[k]);
+			box=mediaBox(arr);
 			System.out.println("IL BOX CHE STO PER AGGIUNGERE ALL'ARRAY FINALE e':" +box);
-			fin.add(box);
-		}
-		
-		/*
-		 * questa è una stampa (che in teoria funziona)
-		for(int k = 0; k< fin.size();k++)
+			//fin.add(box);
+	
+		return box;
+	}
+	
+	public void arrayPrinter(JSONArray arr)
+	{
+		JSONObject box = null;
+		for(int k = 0; k< arr.size();k++)
 		{
-			box = (JSONObject) fin.get(k);
+			box = (JSONObject) arr.get(k);
 			System.out.println(k+") "+box);
 		}
-		*
-		*/
-		return fin;
 	}
 }
 	

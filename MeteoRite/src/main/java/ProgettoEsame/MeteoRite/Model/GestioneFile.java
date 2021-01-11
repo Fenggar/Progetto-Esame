@@ -59,30 +59,35 @@ public class GestioneFile
 	{
 		JSONgest g = new JSONgest();
 		JSONObject box = new JSONObject();
+		Integer index = 0;
 		try 
 		{
 			FileWriter file = new FileWriter(nome_file+ ".json");
 		
 			JSONArray jarr = (JSONArray) jo.get("list");
 			
-			JSONArray ja = g.arrayLoader(jarr);
-			JSONArray arr[] = new JSONArray[5];
-			//non ho capito ancora perchè; ripercorrere dall'inizio, aggiungere print per capire cosa diventa cosa.
-			//comunque per semplicità la funzione potrebbe non ritornare l'array.
-			arr = g.dataFilter(ja,arr);
+			JSONArray ja = g.arrayLoader(jarr); //contiene temperature ogni 3 ore
 			
-			//salvo i valori per il primo confornto
-		
-			//j =0;
-			JSONArray fin = new JSONArray();
-			fin = g.finalArrayLoader(arr);
+			System.out.println("STAMPO JA (temperature ogni 3 ore):");
+			g.arrayPrinter(ja);
 			
-			for(int k = 0; k < fin.size(); k++)
+			JSONArray arr = new JSONArray();
+			
+			JSONArray fin = new JSONArray(); //array dove metterò box con media
+			
+			for(int i = 0; i<5; i++)
 			{
-				box = (JSONObject) fin.get(k);
-				System.out.println("IL BOX CHE STO PER SCRIVERE NEL FILE: "+box);
-				file.append(box.toJSONString());
+				System.out.println("sono nel for di salvaEx");
+				arr = g.dataFilter(ja, index); //a questo punto ho un solo array di box su arr. devo fare media
+				index = g.getIndexLocal();
+				System.out.println("ho chiamato FILTER da GESTIONE, index = " +index);
+				box = g.finalArrayLoader(arr); //contiene media di un intero arr
+				fin.add(box);
+				arr.clear();
+				System.out.println("Ho messo questo box in fin: "+box);
 			}
+			
+			arrayWriter(file, fin); //se non funziona, fare scrittura jsonobject
 			
 	    file.flush();
 		}
@@ -163,6 +168,17 @@ public class GestioneFile
 		
 	}
 	
+	public void arrayWriter(FileWriter file, JSONArray arr) throws IOException
+	{
+		JSONObject box = null;
+		for(int k = 0; k < arr.size(); k++)
+		{
+			box = (JSONObject) arr.get(k);
+			System.out.println("IL BOX CHE STO PER SCRIVERE NEL FILE: "+box);
+			file.append(box.toJSONString());
+		}
+	
+	}
 	
 	
 }
