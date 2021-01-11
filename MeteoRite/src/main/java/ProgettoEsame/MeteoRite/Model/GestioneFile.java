@@ -55,7 +55,7 @@ public class GestioneFile
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public void salvaEssenziale(String nome_file, JSONObject jo) throws IOException, ParseException
+	public void salvaEssenziale(String nome_file, JSONObject jo, String nomeCitta) throws IOException, ParseException
 	{
 		JSONgest g = new JSONgest();
 		JSONObject box = new JSONObject();
@@ -63,7 +63,9 @@ public class GestioneFile
 		try 
 		{
 			FileWriter file = new FileWriter(nome_file+ ".json");
-		
+			nomeCitta+="\n";
+			file.append(nomeCitta);
+			
 			JSONArray jarr = (JSONArray) jo.get("list");
 			
 			JSONArray ja = g.arrayLoader(jarr); //contiene temperature ogni 3 ore
