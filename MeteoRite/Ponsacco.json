@@ -1,2 +1,6 @@
-Ponsacco
-{"feels":"io non uscirei","temp":2.856666666666667,"temp_min":0.75,"temp_max":5.15}{"feels":"io non uscirei","temp":2.7125,"temp_min":0.14,"temp_max":6.57}{"feels":"fa freschino","temp":5.23125,"temp_min":3.22,"temp_max":8.97}{"feels":"fa freschino","temp":5.2250000000000005,"temp_min":2.85,"temp_max":9.72}{"feels":"fa freschino","temp":3.36875,"temp_min":1.27,"temp_max":6.77}
+{"city":"Ponsacco"}
+{"feels":"io non uscirei","temp":2.505,"temp_min":0.75,"temp_max":3.34}
+{"feels":"io non uscirei","temp":2.74875,"temp_min":0.14,"temp_max":6.57}
+{"feels":"fa freschino","temp":5.23125,"temp_min":3.22,"temp_max":8.97}
+{"feels":"fa freschino","temp":5.2250000000000005,"temp_min":2.85,"temp_max":9.72}
+{"feels":"fa freschino","temp":3.36875,"temp_min":1.27,"temp_max":6.77}
