@@ -127,7 +127,7 @@ public class RestControllerTest {
 	 * @throws ParseException
 	 */
 	@GetMapping("/saveex")
-	public String saveX() throws IOException, ParseException
+	public String saveX(@RequestParam(name="citta", defaultValue = "Ponsacco") String par) throws IOException, ParseException
 	{
 		try 
 		{	
@@ -135,13 +135,18 @@ public class RestControllerTest {
 		GestioneFile gest = new GestioneFile();
 		Services serv = new Services();
 		
-		oggetto =serv.forecastID("Pontedera");
+		oggetto =serv.forecastID(par);
 		System.out.println(oggetto);
 		
-		gest.salvaEssenziale("testSpecificoLista", oggetto);
+		//SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
+	    //Date date = new Date();  
+	    //System.out.println(formatter.format(date));  
+		
+		String nomeFile = par;
+		System.out.println("il file si chiamerà: " +nomeFile);
+		
+		gest.salvaEssenziale(nomeFile, oggetto, par);
 		}
-		
-		
 		catch (MalformedURLException e) 
 		{
 			e.printStackTrace();
