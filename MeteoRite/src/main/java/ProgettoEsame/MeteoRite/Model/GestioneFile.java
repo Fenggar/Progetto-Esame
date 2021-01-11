@@ -60,11 +60,18 @@ public class GestioneFile
 		JSONgest g = new JSONgest();
 		JSONObject box = new JSONObject();
 		Integer index = 0;
+		
+		JSONObject nc = new JSONObject();
+		String accapo = "\n";
+		
 		try 
 		{
 			FileWriter file = new FileWriter(nome_file+ ".json");
-			nomeCitta+="\n";
-			file.append(nomeCitta);
+			//nomeCitta+="\n";
+			nc.put("city", nomeCitta);
+			file.append(nc.toJSONString());
+			file.append(accapo);
+			
 			
 			JSONArray jarr = (JSONArray) jo.get("list");
 			
@@ -173,11 +180,13 @@ public class GestioneFile
 	public void arrayWriter(FileWriter file, JSONArray arr) throws IOException
 	{
 		JSONObject box = null;
+		String accapo = "\n";
 		for(int k = 0; k < arr.size(); k++)
 		{
 			box = (JSONObject) arr.get(k);
 			System.out.println("IL BOX CHE STO PER SCRIVERE NEL FILE: "+box);
 			file.append(box.toJSONString());
+			file.append(accapo);
 		}
 	
 	}

@@ -43,9 +43,8 @@ public class JSONgest
 				media += Double.valueOf(m);
 			}
 			media = (double) (media/i);
-			
 			//System.out.println("Valore media: "+media);
-
+			
 			return media;
 	}
 	
