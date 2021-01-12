@@ -224,6 +224,23 @@ public class Services
 		return box;
 	}
 	
+	//questo è un overload di boxer sopra; c'è anche una stringa per la data;
+	public JSONObject boxer(Double t, Double tm, Double tmax, String f, String datastring)
+	{
+		//System.out.println("SONO DENTRO BOXER");
+		JSONObject box=new JSONObject();
+		box.put("temp", t);
+		box.put("temp_min", tm);
+		box.put("temp_max", tmax);
+		box.put("feels", f);
+		box.put("data", datastring);
+		
+		System.out.println("HO RIEMPITO BOXER: "+box);
+		
+		
+		return box;
+	}
+	
 	//creare array coi giorni dimensione 5
 	//prendere dati possibilmente a mezzanotte o giudilì
 	//

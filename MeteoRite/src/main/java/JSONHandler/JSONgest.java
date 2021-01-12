@@ -154,7 +154,7 @@ public class JSONgest
 		return f;
 	}
 		
-	public JSONObject mediaBox(JSONArray arr)
+	public JSONObject mediaBox(JSONArray arr, JSONObject jsondata)
 	{
 		//JSONArray fin = new JSONArray();
 		JSONObject box = new JSONObject();
@@ -167,10 +167,12 @@ public class JSONgest
 			double min = minMin(arr);
 			double max = maxMax(arr);
 			String feel = feelsLike(arr);
+			
+			String datastring =(String) jsondata.get("data");
 			//j++;
 			System.out.println("Ho chiamato tutte le funzioni: "+t +" "+min + " " +max +" " +feel);
 			
-			box = serv.boxer(t, min, max,feel);
+			box = serv.boxer(t, min, max,feel, datastring);
 			
 			System.out.println("CHIAMO BOXER CON: " +box);
 		
@@ -262,6 +264,7 @@ public class JSONgest
 		//System.out.println("FINAL ARRAY LOADER");
 		//JSONArray fin = new JSONArray();
 		JSONObject box = new JSONObject();
+		JSONObject jsondata = new JSONObject();
 		
 		//JSONArray nuovo = new JSONArray();
 		
@@ -271,7 +274,12 @@ public class JSONgest
 				box = (JSONObject) arr.get(j);
 				System.out.println("FINALARRAYLOADER"+j+") "+box);
 			}
-			box=mediaBox(arr);
+			System.out.println("E' QUI L'ERRORE");
+			String pandoro = box.get("data").toString();
+			System.out.println("QUESTA e' LA DATA CHE SALVO PANDORO: "+pandoro);
+			jsondata.put("data", pandoro) ;
+			System.out.println("PANDORO JSON: "+jsondata);
+			box=mediaBox(arr, jsondata);
 			System.out.println("IL BOX CHE STO PER AGGIUNGERE ALL'ARRAY FINALE e':" +box);
 			//fin.add(box);
 	

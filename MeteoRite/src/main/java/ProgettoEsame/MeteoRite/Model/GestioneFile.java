@@ -91,6 +91,8 @@ public class GestioneFile
 				index = g.getIndexLocal();
 				System.out.println("ho chiamato FILTER da GESTIONE, index = " +index);
 				box = g.finalArrayLoader(arr); //contiene media di un intero arr
+				//System.out.println("STAMPO DOPO FINALARRAYLOADER: "+i);
+				//g.arrayPrinter(arr);
 				fin.add(box);
 				arr.clear();
 				System.out.println("Ho messo questo box in fin: "+box);
