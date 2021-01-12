@@ -274,11 +274,8 @@ public class JSONgest
 				box = (JSONObject) arr.get(j);
 				System.out.println("FINALARRAYLOADER"+j+") "+box);
 			}
-			System.out.println("E' QUI L'ERRORE");
 			String pandoro = box.get("data").toString();
-			System.out.println("QUESTA e' LA DATA CHE SALVO PANDORO: "+pandoro);
 			jsondata.put("data", pandoro) ;
-			System.out.println("PANDORO JSON: "+jsondata);
 			box=mediaBox(arr, jsondata);
 			System.out.println("IL BOX CHE STO PER AGGIUNGERE ALL'ARRAY FINALE e':" +box);
 			//fin.add(box);
