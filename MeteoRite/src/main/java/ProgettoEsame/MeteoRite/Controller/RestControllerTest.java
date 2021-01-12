@@ -127,8 +127,9 @@ public class RestControllerTest {
 	 * @throws ParseException
 	 */
 	@GetMapping("/saveex")
-	public String saveX(@RequestParam(name="citta", defaultValue = "Ponsacco") String par) throws IOException, ParseException
+	public String saveX(@RequestParam(name="citta", defaultValue = "Ponsacco") String par,String giorno) throws IOException, ParseException
 	{
+		String nomeFile ="";
 		try 
 		{	
 		JSONObject oggetto = null;	
@@ -142,7 +143,7 @@ public class RestControllerTest {
 	    //Date date = new Date();  
 	    //System.out.println(formatter.format(date));  
 		
-		String nomeFile = par;
+		nomeFile = par+giorno;
 		System.out.println("il file si chiamerà: " +nomeFile);
 		
 		gest.salvaEssenziale(nomeFile, oggetto, par);
@@ -155,7 +156,8 @@ public class RestControllerTest {
 		{
 			e.printStackTrace();
 		}
-		return "salvato";
+		
+		return "salvato "+nomeFile+".JSON";
 	}
 	
 	
