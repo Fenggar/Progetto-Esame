@@ -10,7 +10,16 @@ import Utilities.CassaAttrezzi;
 
 public class StatGen 
 {
-	public void statisticator(String nomeFile)
+	/**
+	 * Questo metodo legge il file creato da /saveex e usa caricaDaFile per rimpire un arrai
+	 * genera quindi le statistiche sulle previsioni lette (cioè, calcola media massimo e minimo della temperatura)
+	 * 
+	 * Chiama: caricaDaFile, mediaTemp, maxMax, minMin, maxMinData, varianza e boxer();
+	 * 
+	 * @param nomeFile
+	 * @return restituisce un JSONObject con le statistiche del file letto.
+	 */
+	public JSONObject statisticator(String nomeFile)
 	{
 		JSONArray jaStat = new JSONArray();
 		JSONObject jo = new JSONObject();
@@ -25,14 +34,15 @@ public class StatGen
 		double tmax = 0.0;
 		double varian =0.0;
 		String data = "";
+		double var = 0.0;
 		
 		String citta = "";
 		
 		jaStat = g.caricaDaFile(nomeFile);
 		
 		t = jg.mediaTemp(jaStat, 1);
-		tmin = jg.maxMax(jaStat, 1);
-		tmax = jg.minMin(jaStat, 1);
+		tmin = jg.minMin(jaStat, 1);
+		tmax = jg.maxMax(jaStat, 1);
 		data = ca.maxMinData(jaStat);
 		
 		jo = (JSONObject) jaStat.get(0);
@@ -42,18 +52,27 @@ public class StatGen
 		jo = ser.boxer(t, tmin, tmax);
 		jo.put("data", data);
 		jo.put("city", citta);
+		var = varianza(jaStat, t);
+		jo.put("varianza", var);
 		
-		//manca varianza
+		return jo;
 		
 	}
 	
+	/**
+	 * Questo metodo calcola la varianza
+	 * (media dei quadrati delle differenze, tra i valori Xi e la media)
+	 * Chiamato da statisticator()
+	 * 
+	 * @param ja array coi valori
+	 * @param valoreMedio media delle temperature calcolata da mediaTemp
+	 * @return restituisce double con valore varianza
+	 */
 	public double varianza(JSONArray ja, double valoreMedio)
 	{
 		double var =0.0;
 		JSONObject jo = new JSONObject();
-		
-		
-		//media dei quadrati delle differenze, tra i valori Xi e la media
+		CassaAttrezzi cassa = new CassaAttrezzi();
 		
 		double media  = 0.0;
 		double scarto = 0.0;
@@ -69,7 +88,10 @@ public class StatGen
 			media+= scarto;
 		}
 		var= media/(i-1);
+		String v = Double.toString(var);
 		
+		v = cassa.arrotondatore(var, v);
+		var = Double.valueOf(v);
 		
 		return var;
 	}

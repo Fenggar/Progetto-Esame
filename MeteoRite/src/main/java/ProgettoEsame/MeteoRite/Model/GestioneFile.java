@@ -179,6 +179,7 @@ public class GestioneFile
 	/**
 	 * Questo metodo carica un JSONArray leggendo da file.
 	 * 
+	 * Chimato da statisticator();
 	 * 
 	 * @param nome Nome del file che leggerò
 	 * @return restituisco l'array che ho letto

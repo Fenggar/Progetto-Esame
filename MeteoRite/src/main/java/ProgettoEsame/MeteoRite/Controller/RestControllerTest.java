@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import Filters.StatGen;
 import ProgettoEsame.MeteoRite.Model.GestioneFile;
 import ProgettoEsame.MeteoRite.Model.Services;
 
@@ -143,6 +144,17 @@ public class RestControllerTest {
 		
 		return "salvato "+nomeFile+".JSON";
 	}
+	
+	@GetMapping("/stat")
+	public JSONObject statiscsGenerator(@RequestParam(name="nome_file", defaultValue = "Pontedera") String nomeFile)
+	{
+		JSONObject jo = null;
+		StatGen sg = new StatGen();
+		jo= sg.statisticator(nomeFile+".json");
+		System.out.println("oggetto generato: "+jo);
+		return jo;
+	}
+	
 	
 	/**
 	 * Questo è un metodo usato per testare funzioni specifiche prima di modificare le rotte.
