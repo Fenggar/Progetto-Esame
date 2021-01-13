@@ -4,6 +4,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import ProgettoEsame.MeteoRite.Model.Services;
+import Utilities.CassaAttrezzi;
 
 
 public class JSONgest 
@@ -32,7 +33,7 @@ public class JSONgest
 	{
 		//System.out.println("MEDIA TEMP");
 			double media = 0.0;
-			String m;
+			String m = "";
 			JSONObject jo = new JSONObject();
 			
 			int i= 0;
@@ -43,6 +44,10 @@ public class JSONgest
 				media += Double.valueOf(m);
 			}
 			media = (double) (media/i);
+			CassaAttrezzi cassa = new CassaAttrezzi();
+			m = cassa.arrotondatore(media, m);
+			media = Double.valueOf(m);
+			
 			//System.out.println("Valore media: "+media);
 			
 			return media;

@@ -121,8 +121,13 @@ public class GestioneFile
 		try
 		{
 			Scanner file_input = new Scanner(new BufferedReader(new FileReader(nome)));	  
-			String str = file_input.nextLine();
-			System.out.println(str);
+			while(file_input.hasNext()) //file_input.hasNext(line)
+			{
+				String str = file_input.nextLine();
+				System.out.println(str);
+				data +=(str);
+			}
+			
 			
 			file_input.close();
 			

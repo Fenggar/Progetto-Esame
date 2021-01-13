@@ -76,12 +76,12 @@ public class RestControllerTest {
 	 * @throws IOException
 	 */
 	@GetMapping("/testfile") 
-	public void testfile(@RequestParam(name="citta", defaultValue = "Ponsacco") String par) throws MalformedURLException, IOException
+	public void testfile(@RequestParam(name="nome_file", defaultValue = "test.txt") String par) throws MalformedURLException, IOException
 	{
 		Services serv = new Services();
 		JSONObject obj = new JSONObject();
 		GestioneFile gestF = new GestioneFile();
-		gestF.leggiFileTest("test.txt");
+		gestF.leggiFileTest(par+".json");
 	}
 	
 	
