@@ -9,6 +9,9 @@ public class CassaAttrezzi
 	 * Questo metodo serve per troncare il double dato come risultato dalla media. 
 	 * E' necessario perchè a quanto pare in questo linguaggio non esiste un modo per decidere quanti decimali hanno i double.
 	 * 
+	 * Chiamato da mediaTemp() e varianza();
+	 * 
+	 * 
 	 * @param media Double che contiene il valore da arrotondare
 	 * @param m Stringa su cui memorizzo il double (in realtà non è poi strettamente necessaria)
 	 * @return
