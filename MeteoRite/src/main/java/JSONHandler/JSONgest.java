@@ -9,26 +9,47 @@ import Utilities.CassaAttrezzi;
 
 public class JSONgest 
 {
+	/**
+	 * Questo attributo è usato per salvare l'indice a cui sono arrivato a leggere l'array (vedi sotto)
+	 */
 	private int indexLocal;
 	
+	/**
+	 * Costruttore vuoto visto che ho sovrascritto quello di default
+	 */
 	public JSONgest()
 	{
 		
 	}
+	/**
+	 * Costruttore con un solo parametro
+	 * @param indexLocal
+	 */
 	public JSONgest(int indexLocal)
 	{
 		this.indexLocal =indexLocal;
 	}
-	
+	/**
+	 * getter per indexLocal
+	 * @return
+	 */
 	public int getIndexLocal() {
 		return indexLocal;
 	}
+	/**
+	 * Setter per indexLocal
+	 * @param indexLocal
+	 */
 	public void setIndexLocal(int indexLocal) {
 		this.indexLocal = indexLocal;
 	}
 	
 	
-	
+	/**
+	 * Questo metodo calcola media delle temperature contenute nel JSONArray
+	 * @param ja Array preso come parametro
+	 * @return restituisce un double con la media
+	 */
 	public double mediaTemp(JSONArray ja)
 	{
 		//System.out.println("MEDIA TEMP");
