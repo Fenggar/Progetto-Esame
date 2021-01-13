@@ -1,5 +1,8 @@
 package Utilities;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 public class CassaAttrezzi 
 {
 	/**
@@ -24,6 +27,25 @@ public class CassaAttrezzi
 		}
 		
 		return ret;
+	}
+	
+	/**
+	 * Metodo superfluo e spartano, per non dire ridicolo, che prende la prima e l'ultima data del json
+	 * (cioè mi dice da quando a quando vanno le previsioni)
+	 * 
+	 * @param ja vettore da cui prendo le date
+	 * @return stringa con le date che ho estrapolato
+	 */
+	public String maxMinData(JSONArray ja)
+	{
+		String d = "Da ";
+		JSONObject jo = new JSONObject();
+		jo = (JSONObject) ja.get(1);
+		d += jo.get("data").toString();
+		d+=" a ";
+		jo = (JSONObject) ja.get(5);
+		d +=jo.get("data").toString();
+		return d;
 	}
 
 }

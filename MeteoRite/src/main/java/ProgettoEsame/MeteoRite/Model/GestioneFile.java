@@ -127,8 +127,6 @@ public class GestioneFile
 				System.out.println(str);
 				data +=(str);
 			}
-			
-			
 			file_input.close();
 			
 		}
@@ -181,8 +179,47 @@ public class GestioneFile
 		{
 			e.printStackTrace();
 		}
-		
 	}
+	
+	/**
+	 * Questo metodo carica un JSONArray leggendo da file.
+	 * 
+	 * 
+	 * @param nome Nome del file che leggerò
+	 * @return restituisco l'array che ho letto
+	 */
+	public JSONArray caricaDaFile(String nome)
+	{
+		JSONArray arr = new JSONArray();
+		JSONObject jo = new JSONObject();
+		
+		String data = "";
+		String line = "";
+		try
+		{
+			Scanner file_input = new Scanner(new BufferedReader(new FileReader(nome)));	  
+			while(file_input.hasNext()) //file_input.hasNext(line)
+			{
+				String str = file_input.nextLine();
+				System.out.println(str);
+				jo = (JSONObject) JSONValue.parseWithException(str);
+				arr.add(jo);
+			}
+			file_input.close();
+			
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		
+		return arr;
+	}
+	
 	
 	public void arrayWriter(FileWriter file, JSONArray arr) throws IOException
 	{
