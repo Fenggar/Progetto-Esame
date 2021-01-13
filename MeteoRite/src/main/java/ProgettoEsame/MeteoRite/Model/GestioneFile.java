@@ -40,16 +40,12 @@ public class GestioneFile
 	}
 	
 	
-	/*possibile bug:
-	 * siccome non c'è un modo migliore per prendere la data (o almeno google non lo sa), memorizziamo un solo char.
-	 * questo non crea problemi per 5 mesi all'anno (una cifra consistente).
-	 * nei restanti mesi, nelle notti di luna piena, quando si arriva alla fine del mese essendoci un 31 ed un 01. 
-	 * Per ora questa è un'eventualità che non si verificherà perchè l'esame è il 25.
-	 * Ne riparleremo al prossimo appello.
-	 */
-	
 	/**
 	 * Questo metodo salva su file solo alcune parti del JSONObject con le previsioni.
+	 * (solo le parti strettamente necessarie per generare le statistiche).
+	 * 
+	 * Viene richiamato dalla rotta /saveex
+	 * 
 	 * @param nome_file
 	 * @param jo
 	 * @throws IOException
@@ -71,7 +67,6 @@ public class GestioneFile
 			nc.put("city", nomeCitta);
 			file.append(nc.toJSONString());
 			file.append(accapo);
-			
 			
 			JSONArray jarr = (JSONArray) jo.get("list");
 			
@@ -220,7 +215,13 @@ public class GestioneFile
 		return arr;
 	}
 	
-	
+	/**
+	 * Questo metodo stampa un array su un file.
+	 * 
+	 * @param file
+	 * @param arr
+	 * @throws IOException
+	 */
 	public void arrayWriter(FileWriter file, JSONArray arr) throws IOException
 	{
 		JSONObject box = null;
