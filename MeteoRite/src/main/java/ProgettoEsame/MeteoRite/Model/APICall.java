@@ -111,7 +111,11 @@ public class APICall
 	public JSONObject getCast() {
 		return cast;
 	}
-
+	
+	/**
+	 * setter del parametro cast
+	 * @param cast
+	 */
 	public void setCast(JSONObject cast) {
 		this.cast = cast;
 	}

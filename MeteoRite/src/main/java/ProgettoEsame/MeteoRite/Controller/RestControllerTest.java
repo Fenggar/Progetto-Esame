@@ -2,8 +2,6 @@ package ProgettoEsame.MeteoRite.Controller;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,30 +15,13 @@ import ProgettoEsame.MeteoRite.Model.Services;
 public class RestControllerTest {
 	
 	/*Esempio RequestBody
+	 * 
 	@PostMapping("/test") //converte il json che metto su postman in un oggetti di Prova
 	public Prova provaPost(@RequestBody Prova body)
 	{
 		return body;
 	}
 	*/
-	
-	//test per utilizzare le date. non funziona. stranamente.
-	@GetMapping("/datatest") 
-	public void data(@RequestParam(name="citta", defaultValue = "Ponsacco") String par) throws MalformedURLException, IOException, ParseException
-	{
-	    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
-	    Date date = new Date();
-	    String s = "2021-01-05";
-	    Date d = new SimpleDateFormat("yyyy-MM-dd").parse(s);
-	    System.out.println(date);
-	    System.out.println(d);
-	    
-	    if(d.compareTo(date)==0 )
-	    	System.out.println("funziona");
-	    else
-	    	System.out.println("oh no");
-	}
-	
 	
 	/**
 	 * Questa rotta effettua la chiamata all'API OpenWeatherMap.
@@ -120,14 +101,17 @@ public class RestControllerTest {
 	}
 	
 	/**
-	 * Questo metodo dovrebbe salvare su file solo alcuni parametri specific del JSONObject restituito dalla chiamata 
-	 * ma ancora non è finito.
-	 * @return
+	 * Questo metodo fa una chiamata all'API;
+	 * salva su un file locale solo le informazioni necessarie per calcolare le statistiche.
+	 * 
+	 * @param city Questo parametro contiene il nome della città 
+	 * @param giorno Questo parametro contiene il giorno in cui viene effettuata la chiamata (solo per comodità per la gestione)
+	 * @return Restituisce il nome del file salvato se è andato tutto a buon fine
 	 * @throws IOException
 	 * @throws ParseException
 	 */
 	@GetMapping("/saveex")
-	public String saveX(@RequestParam(name="citta", defaultValue = "Ponsacco") String par,String giorno) throws IOException, ParseException
+	public String saveX(@RequestParam(name="citta", defaultValue = "Ponsacco") String city,String giorno) throws IOException, ParseException
 	{
 		String nomeFile ="";
 		try 
@@ -136,17 +120,17 @@ public class RestControllerTest {
 		GestioneFile gest = new GestioneFile();
 		Services serv = new Services();
 		
-		oggetto =serv.forecastID(par);
+		oggetto =serv.forecastID(city);
 		System.out.println(oggetto);
 		
 		//SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
 	    //Date date = new Date();  
 	    //System.out.println(formatter.format(date));  
 		
-		nomeFile = par+giorno;
+		nomeFile = city+giorno;
 		System.out.println("il file si chiamerà: " +nomeFile);
 		
-		gest.salvaEssenziale(nomeFile, oggetto, par);
+		gest.salvaEssenziale(nomeFile, oggetto, city);
 		}
 		catch (MalformedURLException e) 
 		{
@@ -160,23 +144,16 @@ public class RestControllerTest {
 		return "salvato "+nomeFile+".JSON";
 	}
 	
-	
+	/**
+	 * Questo è un metodo usato per testare funzioni specifiche prima di modificare le rotte.
+	 * Lo lascio che non si sa mai.
+	 * 
+	 */
 	@GetMapping("/t")
 	public void tester()
 	{
 		JSONObject prova = new JSONObject();
 		
-			
-			int matrice[][] = new int[5][8];
-			for(int j = 0; j<5; j++)
-			{
-				System.out.println("riga?:" +j);
-				for(int k = 0; k<8; k++)
-				{
-					matrice[j][k] = k;
-					System.out.println("cella:" +j+")" +matrice[j][k]);
-				}
-			}
 		
 	}
 		

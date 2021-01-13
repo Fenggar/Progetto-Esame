@@ -148,6 +148,14 @@ public class Services
 		
 	}
 	
+	/**
+	 * Questo metodo accede al campo "date" del json e tramite un complesso sistema di specchi e leve salva la data su una stringa.
+	 * Salva solo il giorno (in formato numerico ma su una stringa)
+	 * Usato in arrayLoader()
+	 * 
+	 * @param ogg JSONObject da cui leggo la data
+	 * @return restituisce una stringa con la data
+	 */
 	public String jsonToDay(JSONObject ogg)
 	{
 		String dt = null;
@@ -166,6 +174,15 @@ public class Services
 		return dataS;
 	}
 	
+	
+	/**
+	 * Questo metodo "estrae" da ogg i parametri riguardanti la temperatura e li salva su dei double.
+	 * Questi valori vengono poi passati a boxer().
+	 * extrapolator() è chiamato da arrayLoader();
+	 * 
+	 * @param ogg json contente il "main" della risposta dell'API
+	 * @return restituisce json con solo i parametri selezionati
+	 */
 	public JSONObject extrapolator(JSONObject ogg)
 	{
 //PRIMA DI ASSEGNARE I DOUBLE: è necessario convertire a stringa il json;
@@ -173,9 +190,9 @@ public class Services
 		//a quanto pare java non casta un intero in un double. perchèssì.
 		
 		JSONObject main = null;
-		Double temp = 0.0;
-		Double tempmin = 0.0;
-		Double tempmax = 0.0;
+		double temp = 0.0; //CAMBIATO DA Double a double, controllare che funziona
+		double tempmin = 0.0;
+		double tempmax = 0.0;
 		String feels;
 		
 		String t;
@@ -209,6 +226,16 @@ public class Services
 		return box;
 	}
 	
+	/**
+	 * Questo metodo crea un JSONObject con dentro i parametri estrapolati dal json dell'API.
+	 * Chiamato da extrapolator()
+	 * 
+	 * @param t temperatura
+	 * @param tm minima
+	 * @param tmax massima
+	 * @param f temperatura percepita
+	 * @return Oggetto con i parametri sopraindicati
+	 */
 	public JSONObject boxer(Double t, Double tm, Double tmax, String f)
 	{
 		//System.out.println("SONO DENTRO BOXER");
@@ -220,11 +247,20 @@ public class Services
 		
 		System.out.println("HO RIEMPITO BOXER: "+box);
 		
-		
 		return box;
 	}
 	
-	//questo è un overload di boxer sopra; c'è anche una stringa per la data;
+	/**
+	 * Overload di boxer, aggiunge uno string per la data
+	 * 
+	 * 
+	 * @param t temperatura
+	 * @param tm minima
+	 * @param tmax massima
+	 * @param f percepita
+	 * @param datastring data
+	 * @return JSONObject con i parametri sopraindicati
+	 */
 	public JSONObject boxer(Double t, Double tm, Double tmax, String f, String datastring)
 	{
 		//System.out.println("SONO DENTRO BOXER");
