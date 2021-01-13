@@ -53,6 +53,38 @@ public class JSONgest
 			return media;
 	}
 	
+	/**
+	 * Questo è un overload di media;
+	 * L'unica differenza è che passo anche un indice con la chiamata
+	 * 
+	 * @param ja Array che contiene tutti gli elementi di cui fare la media
+	 * @param index indice da cui parto a calcolare la media
+	 * @return restituisco media
+	 */
+	public double mediaTemp(JSONArray ja, int index)
+	{
+		//System.out.println("MEDIA TEMP");
+			double media = 0.0;
+			String m = "";
+			JSONObject jo = new JSONObject();
+			
+			int i = 0;
+			for(i=index; i<ja.size();i++)
+			{
+				jo = (JSONObject) ja.get(i);
+				m = jo.get("temp").toString();
+				media += Double.valueOf(m);
+			}
+			media = (double) (media/i);
+			CassaAttrezzi cassa = new CassaAttrezzi();
+			m = cassa.arrotondatore(media, m);
+			media = Double.valueOf(m);
+			
+			//System.out.println("Valore media: "+media);
+			
+			return media;
+	}
+	
 	public double minMin(JSONArray ja)
 	{
 		//System.out.println("MIN MIN");
@@ -85,6 +117,45 @@ public class JSONgest
 			return m;
 	}
 	
+	/**
+	 * Overload di minMin con indice per partire da una posizione qualsiasi dell'array
+	 * 
+	 * @param ja
+	 * @param index
+	 * @return
+	 */
+	public double minMin(JSONArray ja, int index)
+	{
+		//System.out.println("MIN MIN");
+			double m = 666.10;
+			double app = 0.0;
+			String s;
+			JSONObject jo = new JSONObject();
+			
+			int i= 0;
+			for( i= index ; i<ja.size();i++)
+			{
+				//System.out.println("SONO NEL FOR DI MIN MIN");
+				
+				jo = (JSONObject) ja.get(i);
+				
+				//System.out.println(" -messo valore su jo; temp_min =" +jo.get("temp_min"));
+				s=jo.get("temp_min").toString();
+				app = Double.valueOf(s);
+				
+				//System.out.println(" -messo valore su app");
+				
+				if( app < m)
+				{
+					//System.out.println("SONO NELL'IF DI MIN MIN");
+					m = app;
+				}
+			}
+			//System.out.println("Valore min: " +m);
+
+			return m;
+	}
+	
 	public double maxMax(JSONArray ja)
 	{
 		//System.out.println("MAX MAX");
@@ -95,6 +166,38 @@ public class JSONgest
 			
 			int i= 0;
 			for( i=0 ; i<ja.size();i++)
+			{
+				jo = (JSONObject) ja.get(i);
+				s = jo.get("temp_max").toString();
+				app = Double.valueOf(s); 
+				if( app > m)
+				{
+					m = app;
+					//System.out.println("SONO NELL'IF di MAXMAX: "+m);
+				}
+			}
+			//System.out.println("Valore max: "+m);
+
+			return m;
+	}
+	
+	/**
+	 * Overload di maxMax con indice per partire da un punto qualsiasi dell'array
+	 * 
+	 * @param ja
+	 * @param index
+	 * @return
+	 */
+	public double maxMax(JSONArray ja, int index)
+	{
+		//System.out.println("MAX MAX");
+			double m = 0.0;
+			double app = 0.0;
+			String s;
+			JSONObject jo = new JSONObject();
+			
+			int i= 0;
+			for( i=index ; i<ja.size();i++)
 			{
 				jo = (JSONObject) ja.get(i);
 				s = jo.get("temp_max").toString();

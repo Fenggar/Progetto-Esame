@@ -241,6 +241,27 @@ public class Services
 		return box;
 	}
 	
+	/**
+	 * Overload di boxer con solo 3 double (Usato solo in StatGen)
+	 * 
+	 * @param t temperatura
+	 * @param tm minima
+	 * @param tmax massima
+	 * @return JSONObject con i parametri
+	 */
+	public JSONObject boxer(Double t, Double tm, Double tmax)
+	{
+		//System.out.println("SONO DENTRO BOXER");
+		JSONObject box=new JSONObject();
+		box.put("temp", t);
+		box.put("temp_min", tm);
+		box.put("temp_max", tmax);
+		
+		System.out.println("HO RIEMPITO BOXER: "+box);
+		
+		return box;
+	}
+	
 	//creare array coi giorni dimensione 5
 	//prendere dati possibilmente a mezzanotte o giudilì
 	//
