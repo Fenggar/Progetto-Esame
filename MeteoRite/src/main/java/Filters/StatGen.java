@@ -219,11 +219,14 @@ public class StatGen extends CalcoliStat
 		return var;
 	}
 	
-	public JSONArray precisionFilter(JSONArray precision, int index)
+	public double[] precisionFilter(JSONArray precision, int index)
 	{
 		//questa chiamata va fatta 4 volte con index da 0 a 3
 		JSONArray filtered = new JSONArray();
 		JSONObject jo = new JSONObject();
+		//Vector precisioni; trovare struttura appropriata per gestire comodamente array di double.
+		double[] prova = new double[1];
+		prova[0] = 1.0;
 		
 		//controllare che index non sia maggiore di 3.
 		
@@ -234,10 +237,11 @@ public class StatGen extends CalcoliStat
 		}
 		
 		//adesso che ho un array riempito correttamente devo fare media dei 3 campi. servono 3 metodi (testo diverso rispetto media)
-		//serve anche un altro boxer che i nomi non corrispondono ma la firma sì
+		//visto che alla fine faccio una media dei 3 campi del json basta fare un array di double
+		//in pratica su filter, prenderò solo un parametro dall'utente che poi andro a confrontare in un for con le precisioni.
 		
 		
-		return filtered;
+		return prova;
 	}
 	
 
