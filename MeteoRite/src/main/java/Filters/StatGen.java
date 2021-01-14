@@ -8,7 +8,7 @@ import ProgettoEsame.MeteoRite.Model.GestioneFile;
 import ProgettoEsame.MeteoRite.Model.Services;
 import Utilities.CassaAttrezzi;
 
-public class StatGen 
+public class StatGen extends CalcoliStat
 {
 	/**
 	 * Questo metodo legge il file creato da /saveex e usa caricaDaFile per rimpire un arrai
@@ -96,13 +96,20 @@ public class StatGen
 	/**
 	 * Chiama caricaDaFile per leggere leggere le previsioni
 	 * Confronta poi queste previsioni con il meteo attuale nel json alla data successiva
+	 * Calcola la precisione e lsa salva su un jsonobbject;
+	 * Carica un array contente tutte le precisioni 
+	 * (4 per ogni città, nell'ordine in cui sono state lette cioè cronologico per ogni città)
+	 * 
+	 * chiama caricaDaFile() e calcolaDeviazione();
 	 * 
 	 * @param nomeFile nome del Primo file da leggere
 	 */
-	public void precision(String nomeFile)
+	public JSONArray precisionLoader(String nomeFile)
 	{
 		JSONArray ja = new JSONArray();
 		JSONArray ja2 = new JSONArray();
+		JSONArray precision = new JSONArray();
+		
 		JSONObject jo = new JSONObject();
 		JSONObject app = new JSONObject();
 		JSONObject var = new JSONObject();
@@ -113,7 +120,7 @@ public class StatGen
 		GestioneFile g = new GestioneFile();
 		CassaAttrezzi ca= new CassaAttrezzi();
 		
-		ja = g.caricaDaFile(nomeFile);
+		ja = g.caricaDaFile(nomeFile); //leggo un file e salvo su un array gli elementi;
 		//dmm = ca.maxMinData(ja);
 		
 		//questo for legge le 4 date delle previsioni future
@@ -140,19 +147,16 @@ public class StatGen
 			
 			//metodo che paragona campi individuali di due jsonobject
 			
-			var = calcolaDeviazione(jo, app);
+			var = calcolaDeviazione(jo, app); //calcolo la precisione
 			
-//qua ce vorebbe na matrice. Salvo la variazione percentuale (complementare precisione) ma dovrei fare media per ogni giorno)
-			//posso usare 4 array per salvare valori di ogni giorno (di diverse città)
-			//oppure posso provare a caricare variazione trovata per ogni giorno su un array diverso.
-			//diverse città caricano stesso array per stessi giorni. alla fine faccio media di questi array
+			precision.add(var);
 		}
 		
-		
+		return precision;
 	}
 	
 	/**
-	 * Calcola la variazione percentuale tra due valori
+	 * Calcola la precisione delle previsioni; salva il valore su un json.
 	 * Chiama variazioneTraValori()
 	 * 
 	 * Usato da precision() 
@@ -167,21 +171,28 @@ public class StatGen
 		double previsto = 0.0;
 		double effettivo = 0.0;
 		double var = 0.0;
+		double precisione = 0.0;
+		
+		CassaAttrezzi ca= new CassaAttrezzi();
 		
 		previsto =(double) app.get("temp");
 		effettivo = (double) jo.get("temp");
 		var = variazioneTraValori(previsto,effettivo);
-		dev.put("temp_var", var);
+		precisione = ca.complementareDeviazione(var);
+		dev.put("temp_precision", precisione);
+		
 		
 		previsto = (double) app.get("temp_min");
 		effettivo = (double) jo.get("temp_min");
 		var = variazioneTraValori(previsto,effettivo);
-		dev.put("min_var", var);
+		precisione = ca.complementareDeviazione(var);
+		dev.put("temp_min_precision", precisione);
 		
 		previsto = (double) app.get("temp_max");
 		effettivo = (double) jo.get("temp_max");
 		var = variazioneTraValori(previsto,effettivo);
-		dev.put("max_var", var);
+		precisione = ca.complementareDeviazione(var);
+		dev.put("temp_max_precision", precisione);
 		
 		return dev;
 		
@@ -206,6 +217,27 @@ public class StatGen
 		var = var*100;
 		
 		return var;
+	}
+	
+	public JSONArray precisionFilter(JSONArray precision, int index)
+	{
+		//questa chiamata va fatta 4 volte con index da 0 a 3
+		JSONArray filtered = new JSONArray();
+		JSONObject jo = new JSONObject();
+		
+		//controllare che index non sia maggiore di 3.
+		
+		for(int i = index; i<precision.size(); i=i+4)
+		{
+			jo = (JSONObject) precision.get(i);
+			filtered.add(jo);
+		}
+		
+		//adesso che ho un array riempito correttamente devo fare media dei 3 campi. servono 3 metodi (testo diverso rispetto media)
+		//serve anche un altro boxer che i nomi non corrispondono ma la firma sì
+		
+		
+		return filtered;
 	}
 	
 

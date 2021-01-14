@@ -50,5 +50,19 @@ public class CassaAttrezzi
 		d +=jo.get("data").toString();
 		return d;
 	}
+	
+	/**
+	 * Metodo pressochè inutile che calcola il complementare della variazione, cioè la precisione.
+	 * 
+	 * Usato da calcolaDeviazione() in StatGen;
+	 * 
+	 * @param var variazione tra due valori
+	 * @return precisione corrispondente;
+	 */
+	public double complementareDeviazione(double var)
+	{
+		double pre = 100 -var;
+		return pre;
+	}
 
 }
