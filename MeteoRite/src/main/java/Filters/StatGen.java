@@ -240,7 +240,7 @@ public class StatGen extends CalcoliStat
 		//visto che alla fine faccio una media dei 3 campi del json basta fare un array di double
 		//in pratica su filter, prenderò solo un parametro dall'utente che poi andro a confrontare in un for con le precisioni.
 		
-		
+		//scrivo.
 		return prova;
 	}
 	
