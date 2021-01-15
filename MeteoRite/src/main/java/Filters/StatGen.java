@@ -112,11 +112,11 @@ public class StatGen extends CalcoliStat
 	 * @param nomeFile nome del Primo file da leggere
 	 * @return Restituisce array di jsonobject contenti valori precisione per ogni campo.
 	 */
-	public JSONArray precisionLoader(String nomeFile)
+	public void precisionLoader(String nomeFile, JSONArray precision)
 	{
 		JSONArray ja = new JSONArray();
 		JSONArray ja2 = new JSONArray();
-		JSONArray precision = new JSONArray();
+		//JSONArray precision = new JSONArray();
 		
 		JSONObject jo = new JSONObject();
 		JSONObject app = new JSONObject();
@@ -160,7 +160,7 @@ public class StatGen extends CalcoliStat
 			precision.add(var);
 		}
 		
-		return precision; //a questo ho l'array pieno di oggetti con la precisione. posso chiamare precisionFilter().
+		//return precision; //a questo ho l'array pieno di oggetti con la precisione. posso chiamare precisionFilter().
 	}
 	
 	/**

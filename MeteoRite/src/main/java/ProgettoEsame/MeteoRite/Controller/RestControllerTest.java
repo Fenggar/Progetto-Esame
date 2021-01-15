@@ -165,6 +165,7 @@ public class RestControllerTest {
 	{
 		JSONObject jo = null;
 		JSONArray ja = new JSONArray();
+		JSONArray precision = new JSONArray();
 		
 		Vector<Double> database = new Vector<Double>();
 		
@@ -172,13 +173,19 @@ public class RestControllerTest {
 		GestioneFile gest = new GestioneFile();
 		//c'è un errore concettuale: utente passa un nomefile ma a me ne servono di più per calcolare statistiche.
 		
+		//IDEA: possibile soluzione: implemento un post.
+		//faccio scrivere all'utente dei nomi delle città, li salvo su un file. forse json. si da.
+		//a questo punto leggo il file come ho fatto millemila, carico questi nomi in un array.
+		//faccio le chiamate a precisionLoader() usando queste stringhe (che devo convertire).
+		//si può usare vector perchè non mi serve chiave-valore ma solo i cazzo di nomi.
+		//forse per comodità dovrebbe stare tutto in questa rotta.
+		
+		//post->leggo file->carico vector -> chiamo precisionLoader con quello che leggo da vector.
 		
 		
 		
+		sg.precisionLoader(nomeFile+".json", precision);
 		
-		
-		
-		ja = sg.precisionLoader(nomeFile+".json");
 		for(int i=0; i<4; i++)
 		{
 			sg.precisionFilter(ja, i, database);
