@@ -1,5 +1,7 @@
 package Filters;
 
+import java.util.Vector;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -14,7 +16,11 @@ public class StatGen extends CalcoliStat
 	 * Questo metodo legge il file creato da /saveex e usa caricaDaFile per rimpire un arrai
 	 * genera quindi le statistiche sulle previsioni lette (cioè, calcola media massimo e minimo della temperatura)
 	 * 
+	 * Crea un solo jsonobject partendo da un array di quello che legge su file.
+	 * 
 	 * Chiama: caricaDaFile, mediaTemp, maxMax, minMin, maxMinData, varianza e boxer();
+	 * 
+	 *Usato da /stat;
 	 * 
 	 * @param nomeFile
 	 * @return restituisce un JSONObject con le statistiche del file letto.
@@ -100,9 +106,11 @@ public class StatGen extends CalcoliStat
 	 * Carica un array contente tutte le precisioni 
 	 * (4 per ogni città, nell'ordine in cui sono state lette cioè cronologico per ogni città)
 	 * 
+	 * 
 	 * chiama caricaDaFile() e calcolaDeviazione();
 	 * 
 	 * @param nomeFile nome del Primo file da leggere
+	 * @return Restituisce array di jsonobject contenti valori precisione per ogni campo.
 	 */
 	public JSONArray precisionLoader(String nomeFile)
 	{
@@ -133,7 +141,7 @@ public class StatGen extends CalcoliStat
 			date.add(app);
 		}
 		
-		//adesso che conosco le date, le uso per cercare i file
+		//adesso che conosco le date, le uso per cercare i file successivi
 		for(int i = 0; i < date.size(); i++)
 		{
 			s = date.get(i).toString();
@@ -152,14 +160,15 @@ public class StatGen extends CalcoliStat
 			precision.add(var);
 		}
 		
-		return precision;
+		return precision; //a questo ho l'array pieno di oggetti con la precisione. posso chiamare precisionFilter().
 	}
 	
 	/**
 	 * Calcola la precisione delle previsioni; salva il valore su un json.
+	 * In pratica è Services.boxer() solo che cambia i campi testuali.
 	 * Chiama variazioneTraValori()
 	 * 
-	 * Usato da precision() 
+	 * Usato da precisionLoader() 
 	 * 
 	 * @param jo Oggetto con il meteo previsto
 	 * @param app Oggetto con il meteo effettivo (odierno)
@@ -180,7 +189,6 @@ public class StatGen extends CalcoliStat
 		var = variazioneTraValori(previsto,effettivo);
 		precisione = ca.complementareDeviazione(var);
 		dev.put("temp_precision", precisione);
-		
 		
 		previsto = (double) app.get("temp_min");
 		effettivo = (double) jo.get("temp_min");
@@ -219,14 +227,28 @@ public class StatGen extends CalcoliStat
 		return var;
 	}
 	
-	public double[] precisionFilter(JSONArray precision, int index)
+	
+	/**
+	 * Una volta chiamato precisionLoader() ottengo un array che passo a precisionFilter()
+	 * 
+	 * Questo metodo "filtra" l'array prendendo i dati sulla precisione derivanti da un singolo giorno (indicato da index)
+	 * Una volta filtrato precision, carica l'array filtered.
+	 * 
+	 * Uso filtered per calcolare la media delle precisioni.
+	 * Metto questo valore in un Vector di Double.
+	 * 
+	 * @param precision Array che contiene le precisioni di tutti i giorni.
+	 * @param index indice che indica quale giorno filtrare
+	 * @return Vector di double con media precisioni.
+	 */
+	public void precisionFilter(JSONArray precision, int index, Vector<Double> database)
 	{
 		//questa chiamata va fatta 4 volte con index da 0 a 3
 		JSONArray filtered = new JSONArray();
 		JSONObject jo = new JSONObject();
-		//Vector precisioni; trovare struttura appropriata per gestire comodamente array di double.
-		double[] prova = new double[1];
-		prova[0] = 1.0;
+		
+		double media = 0.0;
+		
 		
 		//controllare che index non sia maggiore di 3.
 		
@@ -236,12 +258,13 @@ public class StatGen extends CalcoliStat
 			filtered.add(jo);
 		}
 		
-		//adesso che ho un array riempito correttamente devo fare media dei 3 campi. servono 3 metodi (testo diverso rispetto media)
+		media = mediaPrecision(filtered);
+		database.set(index, media);
+		
 		//visto che alla fine faccio una media dei 3 campi del json basta fare un array di double
 		//in pratica su filter, prenderò solo un parametro dall'utente che poi andro a confrontare in un for con le precisioni.
 		
 		//scrivo.
-		return prova;
 	}
 	
 

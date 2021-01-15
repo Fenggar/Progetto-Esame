@@ -2,7 +2,9 @@ package ProgettoEsame.MeteoRite.Controller;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.ParseException;
+import java.util.Vector;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -124,10 +126,6 @@ public class RestControllerTest {
 		oggetto =serv.forecastID(city);
 		System.out.println(oggetto);
 		
-		//SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
-	    //Date date = new Date();  
-	    //System.out.println(formatter.format(date));  
-		
 		nomeFile = city+giorno;
 		System.out.println("il file si chiamerà: " +nomeFile);
 		
@@ -153,6 +151,45 @@ public class RestControllerTest {
 		jo= sg.statisticator(nomeFile+".json");
 		System.out.println("oggetto generato: "+jo);
 		return jo;
+	}
+	
+	/**
+	 * Questa rotta costruisce un database con i valori della precisione delle previsioni per i giorni disponibili.
+	 * Salva questi dati su un database locale (un file .txt)
+	 * 
+	 * @param nomeFile Nome della città 
+	 * @throws IOException 
+	 */
+	@GetMapping("/builddatabase")
+	public void databaseGenerator(@RequestParam(name="nome_file", defaultValue = "Lucca") String nomeFile) throws IOException
+	{
+		JSONObject jo = null;
+		JSONArray ja = new JSONArray();
+		
+		Vector<Double> database = new Vector<Double>();
+		
+		StatGen sg = new StatGen();
+		GestioneFile gest = new GestioneFile();
+		//c'è un errore concettuale: utente passa un nomefile ma a me ne servono di più per calcolare statistiche.
+		
+		
+		
+		
+		
+		
+		
+		ja = sg.precisionLoader(nomeFile+".json");
+		for(int i=0; i<4; i++)
+		{
+			sg.precisionFilter(ja, i, database);
+		}
+		
+		for(int i=0; i<database.size();i++)
+		{
+			System.out.println("database "+i+") "+database.get(i));
+			gest.salvaFile(nomeFile,database.get(i),i);
+		}
+		
 	}
 	
 	
