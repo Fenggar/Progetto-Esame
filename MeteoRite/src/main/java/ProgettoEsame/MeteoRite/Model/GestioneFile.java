@@ -19,6 +19,8 @@ public class GestioneFile
 	 * Questo metodo salva un JSONObject su file.
 	 * Viene richiamato dalla rotta "/save"
 	 * 
+	 * Nota: usa write() e non append() sovrascrive ogni volta.
+	 * 
 	 * @param nome_file Questo parametro contiene il nome che si vuole dare al file .txt che verrà creato.
 	 * @param jo Questo parametro contiene il JSONObject con le previsioni che verrà stampato.
 	 * @throws IOException
@@ -31,6 +33,30 @@ public class GestioneFile
 		//rivedere questo toString, forse cambia il formato da json a txt		
 		//cambiato toJSONString in toString, non so la differenza ma pare uguale.
             file.write(jo.toString());
+            file.flush();
+	}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Questo è un overload di salvaFile.
+	 * Anzichè stampare un json, scrive
+	 * 
+	 * @param nome_file
+	 * @param d
+	 * @throws IOException
+	 */
+	public void salvaFile(String nome_file, Double d, int i) throws IOException 
+	{
+		try {
+		FileWriter file = new FileWriter(nome_file+ ".json");
+	
+		//rivedere questo toString, forse cambia il formato da json a txt		
+		//cambiato toJSONString in toString, non so la differenza ma pare uguale.
+            file.append(d.toString());
             file.flush();
 	}
 		catch(IOException e)

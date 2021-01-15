@@ -102,11 +102,15 @@ public class CalcoliStat
 	 * @param tmax temp_max_precision;
 	 * @return double con media valori;
 	 */
-	public double mediaPrecision(Double t, Double tm, Double tmax)
+	public double mediaPrecision(JSONArray ja)
 	{
 		//System.out.println("SONO DENTRO BOXER");
 		double precision =0.0;
 		String p = "";
+		
+		Double t = mediaTemp(ja);
+		Double tm = mediaMin(ja);
+		Double tmax = mediaMax(ja);
 		
 		precision = (t+tm+tmax)/3;
 		CassaAttrezzi cassa = new CassaAttrezzi();
