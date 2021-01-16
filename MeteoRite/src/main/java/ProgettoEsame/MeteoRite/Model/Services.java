@@ -221,7 +221,7 @@ public class Services
 		
 		box = boxer(temp,tempmin, tempmax, feels);//, feels);
 		
-		System.out.println("STO PER RESTITUIRE BOXER: " +box);
+		//System.out.println("STO PER RESTITUIRE BOXER: " +box);
 		
 		return box;
 	}
@@ -245,7 +245,7 @@ public class Services
 		box.put("temp_max", tmax);
 		box.put("feels", f);
 		
-		System.out.println("HO RIEMPITO BOXER: "+box);
+		//System.out.println("HO RIEMPITO BOXER: "+box);
 		
 		return box;
 	}
@@ -271,7 +271,7 @@ public class Services
 		box.put("feels", f);
 		box.put("data", datastring);
 		
-		System.out.println("HO RIEMPITO BOXER: "+box);
+		//System.out.println("HO RIEMPITO BOXER: "+box);
 		
 		
 		return box;
@@ -293,24 +293,11 @@ public class Services
 		box.put("temp_min", tm);
 		box.put("temp_max", tmax);
 		
-		System.out.println("HO RIEMPITO BOXER: "+box);
+		//System.out.println("HO RIEMPITO BOXER: "+box);
 		
 		return box;
 	}
 	
-	//creare array coi giorni dimensione 5
-	//prendere dati possibilmente a mezzanotte o giudilì
-	//
-	
-	
 }
-
-	//per il prossimo futuro
-	/*
-	 * for(int i=0;i<this.ja.size();i++) {
-					JSONObject jo = (JSONObject) this.ja.get(i);
-					System.out.println(i+") "+jo.get("title"));
-				}
-	 */
 	
 

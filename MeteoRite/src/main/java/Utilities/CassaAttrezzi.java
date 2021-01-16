@@ -1,5 +1,7 @@
 package Utilities;
 
+import java.util.Vector;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -63,6 +65,24 @@ public class CassaAttrezzi
 	{
 		double pre = 100 -var;
 		return pre;
+	}
+	
+	/**
+	 * Questo metodo carica un array di String.
+	 * Credo fermamente che sia in assoluto il modo peggiore per fare questa cosa.
+	 * 
+	 * @param nomiFile
+	 * @return
+	 */
+	public Vector magnificiSette(Vector nomiFile)
+	{
+		nomiFile.add("Ancona");
+		nomiFile.add("Buggiano");
+		nomiFile.add("Castelfidardo");
+		nomiFile.add("Helsinki");
+		nomiFile.add("Lucca");
+		nomiFile.add("Macerata");
+		return nomiFile;
 	}
 
 }
