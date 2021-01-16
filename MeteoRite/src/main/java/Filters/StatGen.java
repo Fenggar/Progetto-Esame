@@ -140,7 +140,6 @@ public class StatGen extends CalcoliStat
 			System.out.println("STAMPO JO "+i+") "+jo);
 		}
 		
-		System.out.println("STO PER ENTRARE NEL PRIMO FOR");
 		
 		
 		//questo for legge le 4 date delle previsioni future
@@ -149,20 +148,20 @@ public class StatGen extends CalcoliStat
 		{
 			JSONObject app = new JSONObject();
 			
-			System.out.println("SONO NEL PRIMO FOR");
+			//System.out.println("SONO NEL PRIMO FOR");
 			jo = (JSONObject) ja.get(i);
-			System.out.println("JO: "+jo );
+			//System.out.println("JO: "+jo );
 			
 			s = jo.get("data").toString();
-			System.out.println("S contiene: "+s);
+			//System.out.println("S contiene: "+s);
 			
 			app.put("data", s);
-			System.out.println("APP: "+app);
+			//System.out.println("APP: "+app);
 			date.add(app);
 			
 			for(int j = 0; j<date.size();j++)
 			{
-				System.out.println(j+")"+ date.get(j));
+				//System.out.println(j+")"+ date.get(j));
 			}
 			
 			//app.clear();
@@ -171,20 +170,20 @@ public class StatGen extends CalcoliStat
 		for(int i = 0; i<date.size();i++)
 		{
 			jo = (JSONObject) date.get(i);
-			System.out.println("STAMPO DATE "+i+") "+jo);
+			//System.out.println("STAMPO DATE "+i+") "+jo);
 		}
 		
 		//adesso che conosco le date, le uso per cercare i file successivi
 		for(int i = 0; i < date.size(); i++)
 		{
 			JSONObject app = new JSONObject(); 
-			System.out.println("SONO NEL SECONDO FOR");
+			//System.out.println("SONO NEL SECONDO FOR");
 			dato = (JSONObject) date.get(i);
 			s = dato.get("data").toString();
 		
-			System.out.println("S contiene: "+s);
+			//System.out.println("S contiene: "+s);
 			prossimoFile = nomeFile+s+".json";
-			System.out.println("PROSSIMO FILE: " +prossimoFile);
+			//System.out.println("PROSSIMO FILE: " +prossimoFile);
 			
 			ja2 = g.caricaDaFile(prossimoFile);//[0] = nomeCitta; [1]= previsioni odierne, il resto è inutile.
 			jo = (JSONObject) ja2.get(1); //da ja2 voglio sempre previsioni odierne;
@@ -195,6 +194,7 @@ public class StatGen extends CalcoliStat
 			//metodo che paragona campi individuali di due jsonobject
 			
 			var = calcolaDeviazione(jo, app); //calcolo la precisione
+			//System.out.println("LOADER VAR: "+var);
 			
 			precision.add(var);
 		}
@@ -222,24 +222,42 @@ public class StatGen extends CalcoliStat
 		double precisione = 0.0;
 		
 		CassaAttrezzi ca= new CassaAttrezzi();
+		String a = "";
 		
 		previsto =(double) app.get("temp");
 		effettivo = (double) jo.get("temp");
 		var = variazioneTraValori(previsto,effettivo);
-		precisione = ca.complementareDeviazione(var);
-		dev.put("temp_precision", precisione);
+		
+		a = ca.arrotondatore(var, a);
+		var = Double.valueOf(a);
+		//System.out.println("VAR T:"+var);
+		//precisione = ca.complementareDeviazione(var);
+		//System.out.println("PRECISIONE: "+precisione);
+		dev.put("temp_precision", var);
 		
 		previsto = (double) app.get("temp_min");
 		effettivo = (double) jo.get("temp_min");
 		var = variazioneTraValori(previsto,effettivo);
-		precisione = ca.complementareDeviazione(var);
-		dev.put("temp_min_precision", precisione);
+		
+		a = ca.arrotondatore(var, a);
+		var = Double.valueOf(a);
+		//System.out.println("VAR TMIN:"+var);
+		//precisione = ca.complementareDeviazione(var);
+		//System.out.println("PRECISIONE: "+precisione);
+		dev.put("temp_min_precision", var);
 		
 		previsto = (double) app.get("temp_max");
 		effettivo = (double) jo.get("temp_max");
 		var = variazioneTraValori(previsto,effettivo);
-		precisione = ca.complementareDeviazione(var);
-		dev.put("temp_max_precision", precisione);
+		
+		a = ca.arrotondatore(var, a);
+		var = Double.valueOf(a);
+		//System.out.println("VAR TMAX: "+var);
+		//precisione = ca.complementareDeviazione(var);
+		//System.out.println("PRECISIONE: "+precisione);
+		dev.put("temp_max_precision", var);
+		
+		//System.out.println("CALCOLA.DEV: "+dev);
 		
 		return dev;
 		
@@ -250,6 +268,8 @@ public class StatGen extends CalcoliStat
 	 * 
 	 * Usato da calcolaDeviazione
 	 * 
+	 * Nota: converte in gradi kelvin anzichè usare il valore assoluto. per scelta (non che non potessimo farlo).
+	 * 
 	 * @param previsto
 	 * @param effettivo
 	 * @return
@@ -257,11 +277,13 @@ public class StatGen extends CalcoliStat
 	public double variazioneTraValori(double previsto, double effettivo)
 	{
 		double var = 0.0;
+		previsto += 273.15; //converto in gradi kelvin
+		effettivo += 273.15;
 		
 		//FORMULA CALCOLO {[(Xf / Xi) x 100] - 100 }%, che diventa {[(Xf - Xi)/ Xi ] x 100} %
 		
-		var = ((effettivo/previsto)*100) -100;
-		var = var*100;
+		var = ((effettivo/previsto)*100) ;//-100;
+		//var = var*100; questo non so perchè c'è ma da errore.
 		
 		return var;
 	}
@@ -282,6 +304,7 @@ public class StatGen extends CalcoliStat
 	 */
 	public void precisionFilter(JSONArray precision, int index, Vector<Double> database)
 	{
+		//System.out.println("PRECISION FILTER");
 		//questa chiamata va fatta 4 volte con index da 0 a 3
 		JSONArray filtered = new JSONArray();
 		JSONObject jo = new JSONObject();
@@ -295,10 +318,12 @@ public class StatGen extends CalcoliStat
 		{
 			jo = (JSONObject) precision.get(i);
 			filtered.add(jo);
+			//System.out.println("FILTER PRIMO FOR: "+i +") jo:" +jo);
 		}
 		
 		media = mediaPrecision(filtered);
-		database.set(index, media);
+		//database.set(index, media);
+		database.add( media);
 		
 		//visto che alla fine faccio una media dei 3 campi del json basta fare un array di double
 		//in pratica su filter, prenderò solo un parametro dall'utente che poi andro a confrontare in un for con le precisioni.

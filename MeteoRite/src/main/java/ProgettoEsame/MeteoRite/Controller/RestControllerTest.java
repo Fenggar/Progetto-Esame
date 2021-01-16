@@ -165,11 +165,11 @@ public class RestControllerTest {
 	 * Questa rotta costruisce un database con i valori della precisione delle previsioni per i giorni disponibili.
 	 * Salva questi dati su un database locale (un file .txt)
 	 * 
-	 * @param nomeFile Nome della città 
+	 * @param nomeFile Nome del file contente il database
 	 * @throws IOException 
 	 */
 	@GetMapping("/builddatabase")
-	public void databaseGenerator(@RequestParam(name="nome_file", defaultValue = "precision") String nome) throws IOException
+	public void databaseGenerator(@RequestParam(name="nome_file", defaultValue = "DATABASE") String nome) throws IOException
 	{
 		
 		Vector<String> nomiFile = new Vector<String>();
@@ -182,28 +182,26 @@ public class RestControllerTest {
 		JSONArray precision = new JSONArray();
 		
 		Vector<Double> database = new Vector<Double>();
+		double d = 0.0;
 		
 		StatGen sg = new StatGen();
 		GestioneFile gest = new GestioneFile();
 		
 		for(int i = 0; i<nomiFile.size();i++)
 		{
-			sg.precisionLoader(nomiFile.get(i), precision); //NOTA QUI HO TOLTO +".json"
+			sg.precisionLoader(nomiFile.get(i), precision);
+			//System.out.println("REST PRIMO FOR");//NOTA QUI HO TOLTO +".json"
 		}
 		//dopo questo for su precision ho tutte le precisioni per singolo giorno lette dai file.
 		
 		for(int i=0; i<4; i++)
 		{
 			sg.precisionFilter(precision, i, database);
+			//System.out.println("REST SECONDO FOR");
 		}
 		//a questo punto su database ho 4 valori (media delle precisioni delle città);
 		
-		//scrivo su file e stampo la precisione che ho calcolato.
-		for(int i=0; i<database.size();i++)
-		{
-			System.out.println("database "+i+") "+database.get(i));
-			gest.salvaFile(nome,database.get(i));
-		}
+		gest.salvaFile(nome, database);
 		
 	}
 	
