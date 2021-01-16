@@ -7,10 +7,12 @@ import java.util.Vector;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import Filters.StatGen;
+import JSONHandler.JSONgest;
 import ProgettoEsame.MeteoRite.Model.GestioneFile;
 import ProgettoEsame.MeteoRite.Model.Services;
 import Utilities.CassaAttrezzi;
@@ -39,18 +41,29 @@ public class RestControllerTest {
 	 * @throws IOException
 	 */
 	@GetMapping("/forecast") 
-	public JSONObject paramTest(@RequestParam(name="citta", defaultValue = "Ponsacco") String par) throws MalformedURLException, IOException
+	public JSONArray paramTest(@RequestParam(name="citta", defaultValue = "Ponsacco") String par) throws MalformedURLException, IOException
 	{
 		Services serv = new Services();
+		JSONgest ge = new JSONgest();
+		
 		JSONObject obj = new JSONObject();
+		JSONArray ja = new JSONArray();
+		JSONObject app = new JSONObject();
 		
 		String cittaInserita = par;
 		
 		System.out.println(par);
 		
 		obj=serv.forecastID(par);
-		System.out.println(obj);
-		return obj;
+		
+		app.put("city", par);
+		
+		ja = ge.forecastFilter(obj);
+		ja.add(app);
+		
+		ge.arrayPrinter(ja);
+
+		return ja;
 	}
 	
 	
@@ -202,6 +215,14 @@ public class RestControllerTest {
 		//a questo punto su database ho 4 valori (media delle precisioni delle città);
 		
 		gest.salvaFile(nome, database);
+		
+	}
+	
+	@PostMapping("/t")
+	public void thresholdSetter(@RequestParam(name="nome_file", defaultValue = "DATABASE") String nome)
+	{
+		JSONObject prova = new JSONObject();
+		
 		
 	}
 	

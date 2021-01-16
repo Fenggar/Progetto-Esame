@@ -412,6 +412,12 @@ public class JSONgest
 		return box;
 	}
 	
+	
+	/**
+	 * Come dice il nome, stampa un array. Un jsonArray.
+	 * 
+	 * @param arr
+	 */
 	public void arrayPrinter(JSONArray arr)
 	{
 		JSONObject box = null;
@@ -420,6 +426,40 @@ public class JSONgest
 			box = (JSONObject) arr.get(k);
 			System.out.println(k+") "+box);
 		}
+	}
+	
+	
+	/**
+	 * Questo metodo serve a prendere solo i parametri richiesti quando si cercano delle previsioni.
+	 * Usa Services.extrapolator() e tutti i metodi che esso chiama.
+	 * 
+	 * Usato solo da /forecast;
+	 * 
+	 * @param obj prende oggetto contente tutto il json delle previsioni
+	 * @return restituisce array con previsioni temperature previste ogni 3 ore per 5 giorni.
+	 */
+	public JSONArray forecastFilter(JSONObject obj)
+	{
+		JSONArray list = new JSONArray();
+		JSONObject app = new JSONObject();
+		JSONObject box = new JSONObject();
+		JSONArray ret = new JSONArray();
+		
+		Services ser = new Services();
+		
+		list = (JSONArray) obj.get("list");
+		
+		for(int i = 0; i<list.size(); i++)
+		{
+			app = (JSONObject) list.get(i);
+			
+			box = ser.extrapolator(app);
+			
+			ret.add(box);
+		}
+		
+		
+		return ret;
 	}
 }
 	
