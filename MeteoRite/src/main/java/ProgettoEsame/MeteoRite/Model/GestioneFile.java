@@ -50,17 +50,23 @@ public class GestioneFile
 	 * @param d
 	 * @throws IOException
 	 */
-	public void salvaFile(String nome_file, Double d) throws IOException 
+	public void salvaFile(String nome_file, Vector<Double> d) throws IOException 
 	{
+		System.out.println("SIZE: "+d.size());
 		String accapo = "\n";
 		try {
 		FileWriter file = new FileWriter(nome_file+ ".txt");
+		
 	
-		//rivedere questo toString, forse cambia il formato da json a txt		
-		//cambiato toJSONString in toString, non so la differenza ma pare uguale.
-            file.append(d.toString());
+		for(int i = 0; i<d.size();i++)
+		{
+			file.append(d.get(i).toString());
+            System.out.println("Ho scritto d: "+d.get(i));
             file.append(accapo);
+            //System.out.println("Ho scritto accapo: "+accapo);
             file.flush();
+		}
+            
 	}
 		catch(IOException e)
 		{
@@ -230,7 +236,7 @@ public class GestioneFile
 			while(file_input.hasNext()) //file_input.hasNext(line)
 			{
 				String str = file_input.nextLine();
-				System.out.println(str);
+				//System.out.println(str);
 				
 				vect.add(str);
 				
@@ -270,7 +276,7 @@ public class GestioneFile
 		for(int i = 0; i<arr.size();i++)
 		{
 			jo = (JSONObject) arr.get(i);
-			System.out.println("STAMPO ARRAY DI CARRICA FILE: "+i+") "+jo);
+			//System.out.println("STAMPO ARRAY DI CARRICA FILE: "+i+") "+jo);
 		}
 		
 		return arr;
