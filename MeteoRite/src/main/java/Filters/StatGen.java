@@ -99,6 +99,7 @@ public class StatGen extends CalcoliStat
 		return var;
 	}
 	
+	
 	/**
 	 * Chiama caricaDaFile per leggere leggere le previsioni
 	 * Confronta poi queste previsioni con il meteo attuale nel json alla data successiva
@@ -119,7 +120,8 @@ public class StatGen extends CalcoliStat
 		//JSONArray precision = new JSONArray();
 		
 		JSONObject jo = new JSONObject();
-		JSONObject app = new JSONObject();
+		//JSONObject app = new JSONObject();
+		JSONObject dato = new JSONObject();
 		JSONObject var = new JSONObject();
 		JSONArray date = new JSONArray();
 		String s = "";
@@ -128,24 +130,61 @@ public class StatGen extends CalcoliStat
 		GestioneFile g = new GestioneFile();
 		CassaAttrezzi ca= new CassaAttrezzi();
 		
-		ja = g.caricaDaFile(nomeFile); //leggo un file e salvo su un array gli elementi;
+		ja = g.caricaDaFile(nomeFile +".json"); //leggo un file e salvo su un array gli elementi;
 		//dmm = ca.maxMinData(ja);
+		
+		//stampo ja;
+		for(int i = 0; i<ja.size();i++)
+		{
+			jo = (JSONObject) ja.get(i);
+			System.out.println("STAMPO JO "+i+") "+jo);
+		}
+		
+		System.out.println("STO PER ENTRARE NEL PRIMO FOR");
+		
 		
 		//questo for legge le 4 date delle previsioni future
 		//comincia da i=2 perchè la prima posizione contine nomeCittà, la seconda le previsioni odierne;
 		for(int i = 2; i<ja.size();i++)
 		{
-			jo = (JSONObject) ja.get(0);
+			JSONObject app = new JSONObject();
+			
+			System.out.println("SONO NEL PRIMO FOR");
+			jo = (JSONObject) ja.get(i);
+			System.out.println("JO: "+jo );
+			
 			s = jo.get("data").toString();
+			System.out.println("S contiene: "+s);
+			
 			app.put("data", s);
+			System.out.println("APP: "+app);
 			date.add(app);
+			
+			for(int j = 0; j<date.size();j++)
+			{
+				System.out.println(j+")"+ date.get(j));
+			}
+			
+			//app.clear();
+		}
+		
+		for(int i = 0; i<date.size();i++)
+		{
+			jo = (JSONObject) date.get(i);
+			System.out.println("STAMPO DATE "+i+") "+jo);
 		}
 		
 		//adesso che conosco le date, le uso per cercare i file successivi
 		for(int i = 0; i < date.size(); i++)
 		{
-			s = date.get(i).toString();
-			prossimoFile = nomeFile+s;
+			JSONObject app = new JSONObject(); 
+			System.out.println("SONO NEL SECONDO FOR");
+			dato = (JSONObject) date.get(i);
+			s = dato.get("data").toString();
+		
+			System.out.println("S contiene: "+s);
+			prossimoFile = nomeFile+s+".json";
+			System.out.println("PROSSIMO FILE: " +prossimoFile);
 			
 			ja2 = g.caricaDaFile(prossimoFile);//[0] = nomeCitta; [1]= previsioni odierne, il resto è inutile.
 			jo = (JSONObject) ja2.get(1); //da ja2 voglio sempre previsioni odierne;

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import Filters.StatGen;
 import ProgettoEsame.MeteoRite.Model.GestioneFile;
 import ProgettoEsame.MeteoRite.Model.Services;
+import Utilities.CassaAttrezzi;
 
 @RestController
 public class RestControllerTest {
@@ -143,6 +144,13 @@ public class RestControllerTest {
 		return "salvato "+nomeFile+".JSON";
 	}
 	
+	/**
+	 * Questa rotta mostra delle statistiche basate su delle previsioni salvate con /saveex;
+	 * Vengono visualizzati temperatura media, massima, minima varianza nel periodo dei 5 giorni forniti da OpenWeather.
+	 * 
+	 * @param nomeFile Basta indicare il nome della città precedentemente salvata.
+	 * @return Restituisce un jsonObject;
+	 */
 	@GetMapping("/stat")
 	public JSONObject statiscsGenerator(@RequestParam(name="nome_file", defaultValue = "Pontedera") String nomeFile)
 	{
@@ -161,8 +169,14 @@ public class RestControllerTest {
 	 * @throws IOException 
 	 */
 	@GetMapping("/builddatabase")
-	public void databaseGenerator(@RequestParam(name="nome_file", defaultValue = "Lucca") String nomeFile) throws IOException
+	public void databaseGenerator(@RequestParam(name="nome_file", defaultValue = "precision") String nome) throws IOException
 	{
+		
+		Vector<String> nomiFile = new Vector<String>();
+		CassaAttrezzi ca = new CassaAttrezzi();
+		
+		nomiFile = ca.magnificiSette(nomiFile); //carico vettore;
+		
 		JSONObject jo = null;
 		JSONArray ja = new JSONArray();
 		JSONArray precision = new JSONArray();
@@ -171,30 +185,24 @@ public class RestControllerTest {
 		
 		StatGen sg = new StatGen();
 		GestioneFile gest = new GestioneFile();
-		//c'è un errore concettuale: utente passa un nomefile ma a me ne servono di più per calcolare statistiche.
 		
-		//IDEA: possibile soluzione: implemento un post.
-		//faccio scrivere all'utente dei nomi delle città, li salvo su un file. forse json. si da.
-		//a questo punto leggo il file come ho fatto millemila, carico questi nomi in un array.
-		//faccio le chiamate a precisionLoader() usando queste stringhe (che devo convertire).
-		//si può usare vector perchè non mi serve chiave-valore ma solo i cazzo di nomi.
-		//forse per comodità dovrebbe stare tutto in questa rotta.
-		
-		//post->leggo file->carico vector -> chiamo precisionLoader con quello che leggo da vector.
-		
-		
-		
-		sg.precisionLoader(nomeFile+".json", precision);
+		for(int i = 0; i<nomiFile.size();i++)
+		{
+			sg.precisionLoader(nomiFile.get(i), precision); //NOTA QUI HO TOLTO +".json"
+		}
+		//dopo questo for su precision ho tutte le precisioni per singolo giorno lette dai file.
 		
 		for(int i=0; i<4; i++)
 		{
-			sg.precisionFilter(ja, i, database);
+			sg.precisionFilter(precision, i, database);
 		}
+		//a questo punto su database ho 4 valori (media delle precisioni delle città);
 		
+		//scrivo su file e stampo la precisione che ho calcolato.
 		for(int i=0; i<database.size();i++)
 		{
 			System.out.println("database "+i+") "+database.get(i));
-			gest.salvaFile(nomeFile,database.get(i),i);
+			gest.salvaFile(nome,database.get(i));
 		}
 		
 	}

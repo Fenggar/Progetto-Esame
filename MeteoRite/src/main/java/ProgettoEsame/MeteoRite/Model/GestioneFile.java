@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Scanner;
+import java.util.Vector;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -43,20 +44,22 @@ public class GestioneFile
 	
 	/**
 	 * Questo è un overload di salvaFile.
-	 * Anzichè stampare un json, scrive
+	 * Anzichè stampare un json, scrive su un file txt un double.
 	 * 
 	 * @param nome_file
 	 * @param d
 	 * @throws IOException
 	 */
-	public void salvaFile(String nome_file, Double d, int i) throws IOException 
+	public void salvaFile(String nome_file, Double d) throws IOException 
 	{
+		String accapo = "\n";
 		try {
-		FileWriter file = new FileWriter(nome_file+ ".json");
+		FileWriter file = new FileWriter(nome_file+ ".txt");
 	
 		//rivedere questo toString, forse cambia il formato da json a txt		
 		//cambiato toJSONString in toString, non so la differenza ma pare uguale.
             file.append(d.toString());
+            file.append(accapo);
             file.flush();
 	}
 		catch(IOException e)
@@ -107,16 +110,16 @@ public class GestioneFile
 			
 			for(int i = 0; i<5; i++)
 			{
-				System.out.println("sono nel for di salvaEx");
+				//System.out.println("sono nel for di salvaEx");
 				arr = g.dataFilter(ja, index); //a questo punto ho un solo array di box su arr. devo fare media
 				index = g.getIndexLocal();
-				System.out.println("ho chiamato FILTER da GESTIONE, index = " +index);
+				//System.out.println("ho chiamato FILTER da GESTIONE, index = " +index);
 				box = g.finalArrayLoader(arr); //contiene media di un intero arr
 				//System.out.println("STAMPO DOPO FINALARRAYLOADER: "+i);
 				//g.arrayPrinter(arr);
 				fin.add(box);
 				arr.clear();
-				System.out.println("Ho messo questo box in fin: "+box);
+				//System.out.println("Ho messo questo box in fin: "+box);
 			}
 			
 			arrayWriter(file, fin); //se non funziona, fare scrittura jsonobject
@@ -212,8 +215,12 @@ public class GestioneFile
 	 */
 	public JSONArray caricaDaFile(String nome)
 	{
+		System.out.println("SONO SU CARICA FILE");
+		
 		JSONArray arr = new JSONArray();
 		JSONObject jo = new JSONObject();
+		
+		Vector<String> vect = new Vector<String>();
 		
 		String data = "";
 		String line = "";
@@ -224,10 +231,31 @@ public class GestioneFile
 			{
 				String str = file_input.nextLine();
 				System.out.println(str);
-				jo = (JSONObject) JSONValue.parseWithException(str);
+				
+				vect.add(str);
+				
+				
+				/*
+				 * jo = (JSONObject) JSONValue.parseWithException(str);
+				
 				arr.add(jo);
+				System.out.println("DOPO L'ADD, JO VALE: "+jo);
+				for(int i = 0; i<arr.size();i++)
+				{
+					//jo = (JSONObject) arr.get(0);
+					System.out.println("DOPO L'ADD ARR VALE: " +arr.get(i));
+				}
+				*/
+				//jo.clear();
 			}
 			file_input.close();
+			
+			for(int i = 0; i<vect.size();i++)
+			{
+				jo = (JSONObject) JSONValue.parseWithException(vect.get(i));
+				arr.add(jo);
+				//System.out.println("DOPO L'ADD ARR VALE: " +arr.get(i));
+			}
 			
 		}
 		catch (IOException e)
@@ -237,6 +265,12 @@ public class GestioneFile
 		catch (Exception e) 
 		{
 			e.printStackTrace();
+		}
+		
+		for(int i = 0; i<arr.size();i++)
+		{
+			jo = (JSONObject) arr.get(i);
+			System.out.println("STAMPO ARRAY DI CARRICA FILE: "+i+") "+jo);
 		}
 		
 		return arr;
@@ -262,26 +296,7 @@ public class GestioneFile
 		}
 	
 	}
-	
-	
 }
-		
-		
-		/*try {
-			PrintWriter file_output = new PrintWriter(new BufferedWriter(new FileWriter(nome_file)));
-			
-				file_output.println(jo);
-			
-			file_output.close();
-			System.out.println("File salvato!");
-		}
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-		}
-		}
-		
-		*/
 		
 	
 
