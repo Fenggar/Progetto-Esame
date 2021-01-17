@@ -173,10 +173,11 @@ public class GestioneFile
 
 	/**
 	 * Altro test per la lettura di un file.
-	 * Neanche questo serve effettivamente.
+	 * Legge solo una riga
+	 * 
 	 * @param nome
 	 */
-	public void leggiFile(String nome) 
+	public void leggiRiga(String nome) 
 	{
 		/*
 		 * STRING TO JSON

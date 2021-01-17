@@ -41,7 +41,7 @@ public class RestControllerTest {
 	 * @throws IOException
 	 */
 	@GetMapping("/forecast") 
-	public JSONArray paramTest(@RequestParam(name="citta", defaultValue = "Ponsacco") String par) throws MalformedURLException, IOException
+	public JSONArray forecast(@RequestParam(name="citta", defaultValue = "Ponsacco") String par) throws MalformedURLException, IOException
 	{
 		Services serv = new Services();
 		JSONgest ge = new JSONgest();
@@ -91,7 +91,6 @@ public class RestControllerTest {
 	 * @return Se l'esecuzione va a buon fine, il metodo restituisce la stringa "salvato".
 	 * @throws IOException
 	 */
-	//AGGIUNGERE PARAMETRO PER SPECIFICARE NOME FILE.txt DA SALVARE
 	@GetMapping("/save")
 	public String save(@RequestParam(name="citta", defaultValue = "Ponsacco") String par) throws IOException
 	{
@@ -104,7 +103,9 @@ public class RestControllerTest {
 		oggetto =serv.forecastID(par);
 		System.out.println(oggetto);
 		
-		gest.salvaFile("testSalvataggio", oggetto);
+		String s = par+".json";
+		
+		gest.salvaFile(s, oggetto);
 		}
 		catch (MalformedURLException e) 
 		{
@@ -213,13 +214,11 @@ public class RestControllerTest {
 			//System.out.println("REST SECONDO FOR");
 		}
 		//a questo punto su database ho 4 valori (media delle precisioni delle città);
-		
 		gest.salvaFile(nome, database);
-		
 	}
 	
-	@PostMapping("/t")
-	public void thresholdSetter(@RequestParam(name="nome_file", defaultValue = "DATABASE") String nome)
+	@PostMapping("/filter")
+	public void filteredForecast(@RequestParam(name="nome_file", defaultValue = "DATABASE") String nome)
 	{
 		JSONObject prova = new JSONObject();
 		
