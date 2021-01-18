@@ -8,9 +8,12 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import Filters.Corpo;
+import Filters.FunzioniFilter;
 import Filters.StatGen;
 import JSONHandler.JSONgest;
 import ProgettoEsame.MeteoRite.Model.GestioneFile;
@@ -50,7 +53,7 @@ public class RestControllerTest {
 		JSONArray ja = new JSONArray();
 		JSONObject app = new JSONObject();
 		
-		String cittaInserita = par;
+		//String cittaInserita = par;
 		
 		System.out.println(par);
 		
@@ -218,11 +221,60 @@ public class RestControllerTest {
 	}
 	
 	@PostMapping("/filter")
-	public void filteredForecast(@RequestParam(name="nome_file", defaultValue = "DATABASE") String nome)
+	public JSONArray precisionForecast(@RequestBody Corpo body) throws MalformedURLException
 	{
-		JSONObject prova = new JSONObject();
+		Services serv = new Services();
+		FunzioniFilter filter = new FunzioniFilter();
+		
+		JSONObject obj = new JSONObject();
+		JSONArray list = new JSONArray();
+		JSONArray arr = new JSONArray();
+		
+		Vector<String> date = new Vector<String>();
+		Vector<Double> precisioni = new Vector<Double>();
+		
+		double precisione = body.getPrecisione(); //salvo i valori del body;
+		String nome = body.getNome();
+		
+		int index = 0; //indice comune dei vettori.
+		String data = ""; //data puntata da index;
+		
+		obj = serv.forecastID(nome);
+		list = (JSONArray) obj.get("list");
+		//da list prendo le date. chiamo funzione su filter
+		
+		date = filter.dateLoader(list);
+		
+		System.out.println("DATE: "+date);
+		
+		precisioni = filter.databaseReader("database.txt");
+		System.out.println("Precisioni: "+precisioni);
+		
+		index = filter.trovaIndice(precisioni, precisione);//nota: index va da 0 a 4, dimensione array = 5;
+		System.out.println("index:" +index);
+		
+		data = date.get(index); //salvo data puntata da index;
+		
+		//funzione che legge contenuto di list; confronta dt_txt con vettore di date (devo usare jsonToDay) e
+		//salva l'oggetto se la data 
+		//letta è nell'array
+		
+		arr = filter.filteredComparer(date, list, index);
+		//System.out.println("SIZE: "+arr.size());
+		JSONArray filtered = new JSONArray();
+		filtered = filter.filteredLoader(arr);
+		
+		for(int i=0; i<filtered.size();i++)
+		{
+			System.out.println("STAMPO filtered: "+filtered.get(i));
+		}
 		
 		
+		//salvo su array campo list del json di forecast.
+		//uso jsonToDate
+		//fro-> compare data array con data all'indice del filtro. => la metto nell'array che restituisco solo se if è vero.
+		
+		return filtered;
 	}
 	
 	
